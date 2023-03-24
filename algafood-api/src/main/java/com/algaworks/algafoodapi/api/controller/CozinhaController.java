@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafoodapi.api.schemas.output.CozinhaOutput;
+import com.algaworks.algafoodapi.api.dto.CozinhaOutputDTO;
 import com.algaworks.algafoodapi.domain.service.CozinhaService;
 
 import lombok.AllArgsConstructor;
@@ -25,12 +25,12 @@ public class CozinhaController {
     private CozinhaService cozinhaService;
 
     @GetMapping
-    public Page<CozinhaOutput> listar(Pageable page){
+    public Page<CozinhaOutputDTO> listar(Pageable page){
         return cozinhaService.listar(page);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CozinhaOutput> buscar(@PathVariable Long id){
+    public ResponseEntity<CozinhaOutputDTO> buscar(@PathVariable Long id){
         return cozinhaService.buscar(id)
                 .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }

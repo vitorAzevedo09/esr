@@ -1,20 +1,19 @@
-package com.algaworks.algafoodapi.api.schemas.output;
+package com.algaworks.algafoodapi.api.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NonNull;
+import lombok.Setter;
 
 /**
- * Cozinha
+ * CozinhaInputDTO
  */
 @Getter
 @Setter
-public class CozinhaOutput {
-    
+public class CozinhaInputDTO {
+
     @NonNull
     private Long id;
 
     @NonNull
     private String nome;
-
 }
