@@ -19,12 +19,12 @@ import lombok.AllArgsConstructor;
 public class CozinhaAssembler {
     private ModelMapper modelMapper;
 
-    public CozinhaOutputDTO toSchema(Cozinha cozinha){
+    public CozinhaOutputDTO toDto(Cozinha cozinha){
         return modelMapper.map(cozinha, CozinhaOutputDTO.class);
     }
 
-    public Page<CozinhaOutputDTO> toCollectionSchema(Page<Cozinha> cozinhas){
-        return cozinhas.map(this::toSchema);
+    public Page<CozinhaOutputDTO> toCollectionDto(Page<Cozinha> cozinhas){
+        return cozinhas.map(this::toDto);
     }
 
     public Cozinha toEntity(CozinhaInputDTO cozinha){

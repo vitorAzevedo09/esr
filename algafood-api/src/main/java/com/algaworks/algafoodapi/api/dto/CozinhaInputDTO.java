@@ -12,8 +12,5 @@ import lombok.Setter;
 public class CozinhaInputDTO {
 
     @NonNull
-    private Long id;
-
-    @NonNull
     private String nome;
 }

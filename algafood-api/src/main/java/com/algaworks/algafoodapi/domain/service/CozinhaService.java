@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafoodapi.api.assembler.CozinhaAssembler;
+import com.algaworks.algafoodapi.api.dto.CozinhaInputDTO;
 import com.algaworks.algafoodapi.api.dto.CozinhaOutputDTO;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
@@ -26,11 +27,17 @@ public class CozinhaService {
 
     public Page<CozinhaOutputDTO> listar(Pageable page){
         Page<Cozinha> modelCozinhas = cozinhaRepository.findAll(page);
-        return cozinhaAssembler.toCollectionSchema(modelCozinhas); 
+        return cozinhaAssembler.toCollectionDto(modelCozinhas); 
     }
 
     public Optional<CozinhaOutputDTO> buscar(Long id){
-        return cozinhaRepository.findById(id).map(cozinhaAssembler::toSchema);
+        return cozinhaRepository.findById(id).map(cozinhaAssembler::toDto);
+    }
+
+    public Optional<CozinhaOutputDTO> criar(CozinhaInputDTO cozinhaInput){
+        Cozinha cozinha = cozinhaAssembler.toEntity(cozinhaInput);
+        Cozinha cozinhaFromDb = cozinhaRepository.save(cozinha);
+        return Optional.of(cozinhaAssembler.toDto(cozinhaFromDb));
     }
     
 }
