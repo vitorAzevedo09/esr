@@ -2,6 +2,8 @@ package com.algaworks.algafoodapi.domain.service;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,10 +36,19 @@ public class CozinhaService {
         return cozinhaRepository.findById(id).map(cozinhaAssembler::toDto);
     }
 
+
+    @Transactional
     public Optional<CozinhaOutputDTO> criar(CozinhaInputDTO cozinhaInput){
         Cozinha cozinha = cozinhaAssembler.toEntity(cozinhaInput);
         Cozinha cozinhaFromDb = cozinhaRepository.save(cozinha);
         return Optional.of(cozinhaAssembler.toDto(cozinhaFromDb));
+    }
+
+    @Transactional
+    public Optional<CozinhaOutputDTO> atualizar(CozinhaInputDTO cozinhaInput, Long id) {
+        Cozinha cozinha = cozinhaAssembler.toEntity(cozinhaInput);
+        cozinha.setId(id);
+        return Optional.of(cozinhaAssembler.toDto(cozinhaRepository.save(cozinha)));
     }
     
 }
