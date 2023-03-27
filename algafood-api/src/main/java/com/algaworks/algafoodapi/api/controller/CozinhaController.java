@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,12 @@ public class CozinhaController {
     public ResponseEntity<CozinhaOutputDTO> atualizar(@PathVariable Long id,
             @Valid @RequestBody CozinhaInputDTO cozinhaInput) {
         return cozinhaService.atualizar(cozinhaInput, id).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<CozinhaOutputDTO> name(@PathVariable Long id) {
+        return cozinhaService.deletar(id).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.internalServerError().build());
     }
 }

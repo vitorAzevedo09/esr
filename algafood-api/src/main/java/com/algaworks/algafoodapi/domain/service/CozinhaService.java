@@ -50,5 +50,12 @@ public class CozinhaService {
         cozinha.setId(id);
         return Optional.of(cozinhaAssembler.toDto(cozinhaRepository.save(cozinha)));
     }
+
+    @Transactional
+    public Optional<CozinhaOutputDTO> deletar(Long id) {
+        Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
+        cozinhaRepository.delete(cozinha.get());
+        return Optional.of(cozinhaAssembler.toDto(cozinha.get()));
+    }
     
 }
