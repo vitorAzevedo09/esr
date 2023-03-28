@@ -19,20 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafoodapi.api.dto.CozinhaInputDTO;
-import com.algaworks.algafoodapi.api.dto.CozinhaOutputDTO;
+import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputDTO;
+import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaOutputDTO;
 import com.algaworks.algafoodapi.domain.service.CozinhaService;
-
-import lombok.AllArgsConstructor;
 
 /**
  * CozinhaController
  */
 @RestController
 @RequestMapping("/cozinhas")
-@AllArgsConstructor
 public class CozinhaController {
 
+    @Autowired
     private CozinhaService cozinhaService;
 
     @GetMapping
@@ -43,26 +41,30 @@ public class CozinhaController {
     @GetMapping("/{id}")
     public ResponseEntity<CozinhaOutputDTO> buscar(@PathVariable Long id) {
         return cozinhaService.buscar(id)
-                .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<CozinhaOutputDTO> criar(@Valid @RequestBody CozinhaInputDTO cozinhaInput) {
-        return cozinhaService.criar(cozinhaInput).map(ResponseEntity::ok)
+        return cozinhaService.criar(cozinhaInput)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.internalServerError().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CozinhaOutputDTO> atualizar(@PathVariable Long id,
             @Valid @RequestBody CozinhaInputDTO cozinhaInput) {
-        return cozinhaService.atualizar(cozinhaInput, id).map(ResponseEntity::ok)
+        return cozinhaService.atualizar(cozinhaInput, id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.internalServerError().build());
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<CozinhaOutputDTO> name(@PathVariable Long id) {
-        return cozinhaService.deletar(id).map(ResponseEntity::ok)
+        return cozinhaService.deletar(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.internalServerError().build());
     }
 }

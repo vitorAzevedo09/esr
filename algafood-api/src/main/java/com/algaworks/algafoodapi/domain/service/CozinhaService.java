@@ -10,30 +10,31 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafoodapi.api.assembler.CozinhaAssembler;
-import com.algaworks.algafoodapi.api.dto.CozinhaInputDTO;
-import com.algaworks.algafoodapi.api.dto.CozinhaOutputDTO;
+import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputDTO;
+import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaOutputDTO;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 
-import lombok.AllArgsConstructor;
 
 /**
  * CozinhaService
  */
 @Service
-@AllArgsConstructor
 public class CozinhaService {
 
+    @Autowired
     private CozinhaRepository cozinhaRepository;
+
+    @Autowired
     private CozinhaAssembler cozinhaAssembler;
 
     public Page<CozinhaOutputDTO> listar(Pageable page){
         Page<Cozinha> modelCozinhas = cozinhaRepository.findAll(page);
-        return cozinhaAssembler.toCollectionDto(modelCozinhas); 
+        return cozinhaAssembler.toPageOutputDto(modelCozinhas); 
     }
 
     public Optional<CozinhaOutputDTO> buscar(Long id){
-        return cozinhaRepository.findById(id).map(cozinhaAssembler::toDto);
+        return cozinhaRepository.findById(id).map(cozinhaAssembler::toOutputDto);
     }
 
 
@@ -41,21 +42,21 @@ public class CozinhaService {
     public Optional<CozinhaOutputDTO> criar(CozinhaInputDTO cozinhaInput){
         Cozinha cozinha = cozinhaAssembler.toEntity(cozinhaInput);
         Cozinha cozinhaFromDb = cozinhaRepository.save(cozinha);
-        return Optional.of(cozinhaAssembler.toDto(cozinhaFromDb));
+        return Optional.of(cozinhaAssembler.toOutputDto(cozinhaFromDb));
     }
 
     @Transactional
     public Optional<CozinhaOutputDTO> atualizar(CozinhaInputDTO cozinhaInput, Long id) {
         Cozinha cozinha = cozinhaAssembler.toEntity(cozinhaInput);
         cozinha.setId(id);
-        return Optional.of(cozinhaAssembler.toDto(cozinhaRepository.save(cozinha)));
+        return Optional.of(cozinhaAssembler.toOutputDto(cozinhaRepository.save(cozinha)));
     }
 
     @Transactional
     public Optional<CozinhaOutputDTO> deletar(Long id) {
         Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
         cozinhaRepository.delete(cozinha.get());
-        return Optional.of(cozinhaAssembler.toDto(cozinha.get()));
+        return Optional.of(cozinhaAssembler.toOutputDto(cozinha.get()));
     }
     
 }

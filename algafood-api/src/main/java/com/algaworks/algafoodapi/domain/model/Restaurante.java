@@ -10,20 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Restaurante
  */
-@Data
 @Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Restaurante {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,4 +29,20 @@ public class Restaurante {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public BigDecimal getTaxaFrete() {
+        return taxaFrete;
+    }
+
+    public Cozinha getCozinha() {
+        return cozinha;
+    }
 }

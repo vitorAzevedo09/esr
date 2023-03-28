@@ -1,33 +1,37 @@
 package com.algaworks.algafoodapi.api.assembler;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafoodapi.api.dto.CozinhaInputDTO;
-import com.algaworks.algafoodapi.api.dto.CozinhaOutputDTO;
+import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputDTO;
+import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaOutputDTO;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
-
-import org.modelmapper.ModelMapper;
-
-import lombok.AllArgsConstructor;
 
 /**
  * CozinhaAssembler
  */
-@AllArgsConstructor
 @Component
 public class CozinhaAssembler {
-    private ModelMapper modelMapper;
 
-    public CozinhaOutputDTO toDto(Cozinha cozinha){
-        return modelMapper.map(cozinha, CozinhaOutputDTO.class);
+    public CozinhaOutputDTO toOutputDto(Cozinha cozinha) {
+        return new CozinhaOutputDTO(cozinha.getId(), cozinha.getNome());
     }
 
-    public Page<CozinhaOutputDTO> toCollectionDto(Page<Cozinha> cozinhas){
-        return cozinhas.map(this::toDto);
+    public Page<CozinhaOutputDTO> toPageOutputDto(Page<Cozinha> cozinhas) {
+        return cozinhas.map(this::toOutputDto);
     }
 
-    public Cozinha toEntity(CozinhaInputDTO cozinha){
-        return modelMapper.map(cozinha, Cozinha.class);
+    public List<CozinhaOutputDTO> toCollectionOutputDto(List<Cozinha> cozinhas) {
+        return cozinhas.stream()
+                .map(this::toOutputDto)
+                .collect(Collectors.toList());
+
+    }
+
+    public Cozinha toEntity(CozinhaInputDTO cozinha) {
+       return new Cozinha(); 
     }
 }
