@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,5 +45,21 @@ public class Restaurante {
 
     public Cozinha getCozinha() {
         return cozinha;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setTaxaFrete(BigDecimal taxaFrete) {
+        this.taxaFrete = taxaFrete;
+    }
+
+    public void setCozinha(Cozinha cozinha) {
+        this.cozinha = cozinha;
     }
 }

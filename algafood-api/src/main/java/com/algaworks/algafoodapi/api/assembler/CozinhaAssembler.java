@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputDTO;
+import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputIdDTO;
 import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaOutputDTO;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 
@@ -18,6 +19,10 @@ public class CozinhaAssembler {
 
     public CozinhaOutputDTO toOutputDto(Cozinha cozinha) {
         return new CozinhaOutputDTO(cozinha.getId(), cozinha.getNome());
+    }
+
+    public CozinhaInputIdDTO toInputIdDto(Cozinha cozinha) {
+        return new CozinhaInputIdDTO(cozinha.getId());
     }
 
     public Page<CozinhaOutputDTO> toPageOutputDto(Page<Cozinha> cozinhas) {
@@ -32,6 +37,14 @@ public class CozinhaAssembler {
     }
 
     public Cozinha toEntity(CozinhaInputDTO cozinha) {
-       return new Cozinha(); 
+        Cozinha cozinhaEntity = new Cozinha();
+        cozinhaEntity.setNome(cozinha.nome());
+       return cozinhaEntity; 
+    }
+
+    public Cozinha toEntity(CozinhaInputIdDTO cozinha) {
+        Cozinha cozinhaEntity = new Cozinha();
+        cozinhaEntity.setId(cozinha.id());
+       return cozinhaEntity; 
     }
 }

@@ -23,6 +23,10 @@ public class Cozinha {
         this.id = id;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public Long getId() {
         return id;
     }
