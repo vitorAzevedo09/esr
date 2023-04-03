@@ -44,7 +44,9 @@ public class CozinhaAssembler {
 
     public Cozinha toEntity(CozinhaInputIdDTO cozinha) {
         Cozinha cozinhaEntity = new Cozinha();
-        cozinhaEntity.setId(cozinha.id());
+        if(cozinha != null){
+            cozinhaEntity.setId(cozinha.id());
+        }
        return cozinhaEntity; 
     }
 }

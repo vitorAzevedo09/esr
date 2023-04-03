@@ -54,13 +54,13 @@ public class RestauranteService {
 
     @Transactional
     public Optional<RestauranteOutputDTO> atualizar(Long id, RestauranteInputDTO restauranteIN){
-        Restaurante restauranteUpdate = restauranteAssembler.toEntity(restauranteIN);
-        restauranteUpdate.setId(id);
-        restauranteUpdate = restauranteRepository.save(restauranteUpdate);
-        Restaurante restauranteDB = restauranteRepository.findById(id).get();
-        Cozinha cozinha = cozinhaRepository.findById(restauranteDB.getCozinha().getId()).get();
-        restauranteDB.setCozinha(cozinha);
-        RestauranteOutputDTO restauranteOUT = restauranteAssembler.toOutputDto(restauranteDB);
+        Restaurante restauranteToUpdate = restauranteAssembler.toEntity(restauranteIN);
+        restauranteToUpdate.setId(id);
+
+        Restaurante restauranteUpdated = restauranteRepository.saveAndFlush(restauranteToUpdate);
+
+        RestauranteOutputDTO restauranteOUT = restauranteAssembler.toOutputDto(restauranteUpdated);
+
         return Optional.of(restauranteOUT);
     }
 }
