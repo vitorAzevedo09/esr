@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.domain.service;
 
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,18 @@ public class RestauranteService {
         Optional<Cozinha> cozinha = cozinhaRepository.findById(restaurante.getCozinha().getId());
         restaurante.setCozinha(cozinha.get());
         RestauranteOutputDTO restauranteOUT = restauranteAssembler.toOutputDto(restaurante);
+        return Optional.of(restauranteOUT);
+    }
+
+    @Transactional
+    public Optional<RestauranteOutputDTO> atualizar(Long id, RestauranteInputDTO restauranteIN){
+        Restaurante restauranteUpdate = restauranteAssembler.toEntity(restauranteIN);
+        restauranteUpdate.setId(id);
+        restauranteUpdate = restauranteRepository.save(restauranteUpdate);
+        Restaurante restauranteDB = restauranteRepository.findById(id).get();
+        Cozinha cozinha = cozinhaRepository.findById(restauranteDB.getCozinha().getId()).get();
+        restauranteDB.setCozinha(cozinha);
+        RestauranteOutputDTO restauranteOUT = restauranteAssembler.toOutputDto(restauranteDB);
         return Optional.of(restauranteOUT);
     }
 }

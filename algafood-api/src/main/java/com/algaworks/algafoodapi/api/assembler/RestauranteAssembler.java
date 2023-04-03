@@ -30,6 +30,10 @@ public class RestauranteAssembler {
                 cozinhaAssembler.toOutputDto(restaurante.getCozinha()));
     }
 
+    /**
+     * @param restauranteIN Restaurante input DTO
+     * @return Entity Restaurante
+     */
     public Restaurante toEntity(RestauranteInputDTO restauranteIN) {
         Restaurante restaurante = new Restaurante();
         restaurante.setNome(restauranteIN.nome());

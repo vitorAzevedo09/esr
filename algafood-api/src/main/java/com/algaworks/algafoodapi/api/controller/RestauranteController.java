@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,15 +34,25 @@ public class RestauranteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestauranteOutputDTO> buscar(@PathVariable Long id) {
+    public ResponseEntity<RestauranteOutputDTO> buscar(
+            @PathVariable Long id) {
         return restauranteService.buscar(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<RestauranteOutputDTO> criar(@Valid @RequestBody RestauranteInputDTO restauranteIN) {
+    public ResponseEntity<RestauranteOutputDTO> criar(
+            @Valid @RequestBody RestauranteInputDTO restauranteIN) {
         return restauranteService.criar(restauranteIN).map(r -> ResponseEntity.ok(r))
                 .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RestauranteOutputDTO> atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody RestauranteInputDTO restauranteIN) {
+        return restauranteService.atualizar(id,restauranteIN).map(ResponseEntity::ok)
+        .orElse(ResponseEntity.internalServerError().build());
     }
 }
