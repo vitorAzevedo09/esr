@@ -28,7 +28,7 @@ public class Restaurante {
     @Column(nullable = false)
     private BigDecimal taxaFrete;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(nullable = false)
     private Cozinha cozinha;
 

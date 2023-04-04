@@ -63,4 +63,14 @@ public class RestauranteService {
 
         return Optional.of(restauranteOUT);
     }
+
+    @Transactional
+    public Optional<RestauranteOutputDTO> deletar(Long id) {
+        Optional<Restaurante> restauranteDB = restauranteRepository.findById(id);
+
+        restauranteRepository.deleteById(id);
+
+        RestauranteOutputDTO restauranteOUT = restauranteAssembler.toOutputDto(restauranteDB.get());
+        return Optional.of(restauranteOUT);
+    }
 }
