@@ -1,14 +1,16 @@
 package com.algaworks.algafoodapi.domain.service;
 
+import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 import com.algaworks.algafoodapi.api.assembler.RestauranteAssembler;
 import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteOutputDTO;
@@ -62,6 +64,24 @@ public class RestauranteService {
         RestauranteOutputDTO restauranteOUT = restauranteAssembler.toOutputDto(restauranteUpdated);
 
         return Optional.of(restauranteOUT);
+    }
+
+    @Transactional
+    public Optional<RestauranteOutputDTO> atualizarParcialmente(Long id, Map<String, Object> campos) {
+        Optional<Restaurante> restaurante = restauranteRepository.findById(id);
+
+        if (restaurante.isEmpty()) {
+            return Optional.empty();
+        }
+
+        campos.remove("id");
+        campos.forEach((k, v) -> {
+            Field campo = ReflectionUtils.findField(Restaurante.class, k);
+            campo.setAccessible(true);
+            ReflectionUtils.setField(campo, restaurante.get(), v);
+        });
+        Restaurante restauranteUpdated = restauranteRepository.save(restaurante.get());
+        return Optional.of(restauranteAssembler.toOutputDto(restauranteUpdated));
     }
 
     @Transactional

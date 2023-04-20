@@ -1,5 +1,8 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import java.util.Map;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +65,16 @@ public class RestauranteController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<RestauranteOutputDTO> atualizarParcialmente() {
-
+    public ResponseEntity<RestauranteOutputDTO> atualizarParcialmente(@PathVariable Long id,
+            @RequestBody Map<String, Object> campos) {
+        if (id <= 0 || campos == null || campos.isEmpty() || !campos.get("id").equals(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        Optional<RestauranteOutputDTO> restauranteUpdated = restauranteService.atualizarParcialmente(id, campos);
+        if (restauranteUpdated.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(restauranteUpdated.get());
     }
 
     @DeleteMapping("/{id}")
