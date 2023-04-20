@@ -1,6 +1,5 @@
 package com.algaworks.algafoodapi.api.assembler;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafoodapi.api.dto.RestauranteOutputDTO;
-import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputIdDTO;
+import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteOutputDTO;
 import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteInputDTO;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 

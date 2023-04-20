@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafoodapi.api.assembler.RestauranteAssembler;
-import com.algaworks.algafoodapi.api.dto.RestauranteOutputDTO;
+import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteOutputDTO;
 import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteInputDTO;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
@@ -53,7 +53,7 @@ public class RestauranteService {
     }
 
     @Transactional
-    public Optional<RestauranteOutputDTO> atualizar(Long id, RestauranteInputDTO restauranteIN){
+    public Optional<RestauranteOutputDTO> atualizar(Long id, RestauranteInputDTO restauranteIN) {
         Restaurante restauranteToUpdate = restauranteAssembler.toEntity(restauranteIN);
         restauranteToUpdate.setId(id);
 
