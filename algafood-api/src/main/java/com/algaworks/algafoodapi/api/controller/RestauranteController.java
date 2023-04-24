@@ -67,7 +67,7 @@ public class RestauranteController {
     @PatchMapping("/{id}")
     public ResponseEntity<RestauranteOutputDTO> atualizarParcialmente(@PathVariable Long id,
             @RequestBody Map<String, Object> campos) {
-        if (id <= 0 || campos == null || campos.isEmpty() || !campos.get("id").equals(id)) {
+        if (id <= 0 || campos == null || campos.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         Optional<RestauranteOutputDTO> restauranteUpdated = restauranteService.atualizarParcialmente(id, campos);

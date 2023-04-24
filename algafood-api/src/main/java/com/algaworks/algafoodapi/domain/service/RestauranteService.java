@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.domain.service;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 
@@ -74,11 +75,14 @@ public class RestauranteService {
             return Optional.empty();
         }
 
-        campos.remove("id");
         campos.forEach((k, v) -> {
             Field campo = ReflectionUtils.findField(Restaurante.class, k);
             campo.setAccessible(true);
-            ReflectionUtils.setField(campo, restaurante.get(), v);
+            if (v instanceof Double) {
+                ReflectionUtils.setField(campo, restaurante.get(), BigDecimal.valueOf((Double) v));
+            } else {
+                ReflectionUtils.setField(campo, restaurante.get(), v);
+            }
         });
         Restaurante restauranteUpdated = restauranteRepository.save(restaurante.get());
         return Optional.of(restauranteAssembler.toOutputDto(restauranteUpdated));
