@@ -8,6 +8,7 @@ import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputIdDTO;
  * RestauranteInputDTO
  */
 public record RestauranteInputDTO(
-    String nome,
-    BigDecimal taxa_frete,
-    CozinhaInputIdDTO cozinha) {}
+        String nome,
+        BigDecimal taxa_frete,
+        CozinhaInputIdDTO cozinha) {
+}

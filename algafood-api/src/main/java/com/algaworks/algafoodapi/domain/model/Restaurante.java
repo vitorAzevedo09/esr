@@ -1,7 +1,6 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
