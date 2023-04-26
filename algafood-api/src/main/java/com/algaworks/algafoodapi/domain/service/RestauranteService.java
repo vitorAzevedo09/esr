@@ -40,6 +40,11 @@ public class RestauranteService {
         return restauranteAssembler.toPageOutputDto(restauranteRepository.findAll(page));
     }
 
+    public Page<RestauranteOutputDTO> buscarPorNome(Pageable page, String name) {
+        Page<Restaurante> restaurantes = restauranteRepository.consultarPorNome(name, page);
+        return restaurantes.map(r -> restauranteAssembler.toOutputDto(r));
+    }
+
     public Optional<RestauranteOutputDTO> buscar(Long id) {
         Optional<Restaurante> restauranteDB = restauranteRepository.findById(id);
         return restauranteDB.map(r -> Optional.of(restauranteAssembler.toOutputDto(r)))

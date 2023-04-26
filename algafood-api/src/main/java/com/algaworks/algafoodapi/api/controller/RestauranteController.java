@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +39,11 @@ public class RestauranteController {
     @GetMapping
     public Page<RestauranteOutputDTO> listar(Pageable page) {
         return restauranteService.listar(page);
+    }
+
+    @GetMapping("/por-nome")
+    public Page<RestauranteOutputDTO> buscarPorNome(Pageable page, @RequestParam(value = "nome") String name) {
+        return restauranteService.buscarPorNome(page, name);
     }
 
     @GetMapping("/{id}")
