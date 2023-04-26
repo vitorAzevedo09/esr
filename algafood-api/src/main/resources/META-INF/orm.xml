@@ -4,7 +4,7 @@
   version="2.2">
   <named-query name="Restaurante.consultarPorNome">
     <query>
-    from Restaurante where nome like  concat('%', :nome, '%') and cozinha.id = :id
+    from Restaurante where nome like  concat('%', :nome, '%')
     </query>
   </named-query>
 </entity-mappings>
