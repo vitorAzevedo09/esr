@@ -46,6 +46,12 @@ public class RestauranteController {
         return restauranteService.buscarPorNome(page, name);
     }
 
+    @GetMapping("/por-nome/frete-gratis")
+    public Page<RestauranteOutputDTO> buscarPorNomeEFreteGratis(Pageable page,
+            @RequestParam(value = "nome") String name) {
+        return restauranteService.buscarPorNomeEFreteGratis(page, name);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<RestauranteOutputDTO> buscar(
             @PathVariable Long id) {
