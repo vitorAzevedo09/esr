@@ -1,5 +1,8 @@
 package com.algaworks.algafoodapi.domain.service;
 
+import static com.algaworks.algafoodapi.infrastructure.repository.RestauranteSpecs.comFreteGratis;
+import static com.algaworks.algafoodapi.infrastructure.repository.RestauranteSpecs.comNomeSemelhante;
+
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -42,6 +45,12 @@ public class RestauranteService {
 
     public Page<RestauranteOutputDTO> buscarPorNome(Pageable page, String name) {
         Page<Restaurante> restaurantes = restauranteRepository.consultarPorNome(name, page);
+        return restaurantes.map(r -> restauranteAssembler.toOutputDto(r));
+    }
+
+    public Page<RestauranteOutputDTO> buscarPorNomeEFreteGratis(Pageable page, String name) {
+        Page<Restaurante> restaurantes = restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(name)),
+                page);
         return restaurantes.map(r -> restauranteAssembler.toOutputDto(r));
     }
 
