@@ -1,34 +1,21 @@
 package com.algaworks.algafoodapi.domain.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 /**
- * Cidade
+ * Estado
  */
 @Entity
-public class Cidade {
+public class Estado {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String nome;
-
-  @ManyToOne(cascade = CascadeType.PERSIST)
-  private Estado estado;
-
-  public Long getId() {
-    return id;
-  }
-
-  public String getNome() {
-    return nome;
-  }
 
   public void setId(Long id) {
     this.id = id;
@@ -38,11 +25,12 @@ public class Cidade {
     this.nome = nome;
   }
 
-  public void setEstado(Estado estado) {
-    this.estado = estado;
+  public Long getId() {
+    return id;
   }
 
-  public Estado getEstado() {
-    return estado;
+  public String getNome() {
+    return nome;
   }
+
 }

@@ -20,7 +20,6 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long>,
 
   Page<Restaurante> findAll(Specification<Restaurante> spec, Pageable page);
 
-  @Query("from Restaurante r join r.cozinha")
   Page<Restaurante> findAll(Pageable page);
 
 }

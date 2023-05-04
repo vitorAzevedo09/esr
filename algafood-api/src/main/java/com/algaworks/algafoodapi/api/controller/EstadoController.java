@@ -7,21 +7,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafoodapi.api.dto.cidade.CidadeOutputDTO;
-import com.algaworks.algafoodapi.domain.service.CidadeService;
+import com.algaworks.algafoodapi.api.dto.estado.EstadoOutputDTO;
+import com.algaworks.algafoodapi.domain.service.EstadoService;
 
 /**
- * CidadeController
+ * EstadoController
  */
 @RestController
-@RequestMapping("/cidades")
-public class CidadeController {
+@RequestMapping("/estados")
+public class EstadoController {
 
   @Autowired
-  private CidadeService cidadeService;
+  private EstadoService estadoService;
 
   @GetMapping
-  public Page<CidadeOutputDTO> listar(Pageable page) {
-    return cidadeService.getAll(page);
+  public Page<EstadoOutputDTO> listar(Pageable page) {
+    return estadoService.getAll(page);
   }
+
 }
