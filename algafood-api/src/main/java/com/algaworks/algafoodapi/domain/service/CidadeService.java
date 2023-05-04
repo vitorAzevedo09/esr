@@ -18,6 +18,7 @@ public class CidadeService {
   @Autowired
   private CidadeRepository cidadeRepository;
 
+  @Autowired
   private CidadeAssembler cidadeAssembler;
 
   public Page<CidadeOutputDTO> getAll(Pageable page) {
