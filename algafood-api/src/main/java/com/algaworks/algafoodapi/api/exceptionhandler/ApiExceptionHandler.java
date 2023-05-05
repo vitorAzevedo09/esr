@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 public class ApiExceptionHandler {
 
   public ResponseEntity<?> tratarEntidadeNaoEcontrada(EntityNotFoundException e) {
-    Problema problema = new Problema(LocalDateTime.now(), e.toString());
+    Problema problema = new Problema.Builder()
+        .dataHora(LocalDateTime.now())
+        .mensagem(e.toString()).build();
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problema);
   }
 

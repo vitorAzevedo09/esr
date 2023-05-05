@@ -1,3 +1,9 @@
+delete from estado;
+delete from cidade;
+delete from restaurante;
+delete from cozinha;
+
+
 
 insert ignore into cozinha (nome) values ('Tailandesa');
 insert ignore into cozinha (nome) values ('Indiana');
