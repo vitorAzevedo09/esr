@@ -6,9 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafoodapi.api.dto.cidade.CidadeInputDTO;
 import com.algaworks.algafoodapi.api.dto.cidade.CidadeOutputDTO;
 import com.algaworks.algafoodapi.domain.service.CidadeService;
 
@@ -30,5 +33,10 @@ public class CidadeController {
   @GetMapping("/{id}")
   public ResponseEntity<CidadeOutputDTO> buscar(@PathVariable("id") final Long id) {
     return ResponseEntity.ok(cidadeService.getOne(id));
+  }
+
+  @PostMapping
+  public ResponseEntity<CidadeOutputDTO> criar(@RequestBody CidadeInputDTO cidadeIN) {
+    return ResponseEntity.ok(cidadeService.create(cidadeIN));
   }
 }

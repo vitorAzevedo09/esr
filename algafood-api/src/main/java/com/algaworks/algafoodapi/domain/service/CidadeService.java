@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.algaworks.algafoodapi.api.assembler.CidadeAssembler;
+import com.algaworks.algafoodapi.api.dto.cidade.CidadeInputDTO;
 import com.algaworks.algafoodapi.api.dto.cidade.CidadeOutputDTO;
 import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.repository.CidadeRepository;
@@ -33,5 +34,11 @@ public class CidadeService {
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
             String.format("Cidade with id " + id + " not found", id)));
     return cidadeAssembler.toOutputDTO(cidade);
+  }
+
+  public CidadeOutputDTO create(CidadeInputDTO cidadeIN) {
+    Cidade cidade = cidadeAssembler.toEntity(cidadeIN);
+    Cidade cidadeSaved = cidadeRepository.save(cidade);
+    return cidadeAssembler.toOutputDTO(cidadeSaved);
   }
 }
