@@ -1,5 +1,7 @@
 package com.algaworks.algafoodapi.domain.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,7 +17,7 @@ import com.algaworks.algafoodapi.domain.model.Restaurante;
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long>, JpaSpecificationExecutor<Restaurante> {
 
-  Page<Restaurante> consultarPorNome(String nome, Pageable page);
+  List<Restaurante> consultarPorNome(String nome);
 
   Page<Restaurante> findAll(Specification<Restaurante> spec, Pageable page);
 

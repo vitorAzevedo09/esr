@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,8 +43,8 @@ public class RestauranteController {
     }
 
     @GetMapping("/por-nome")
-    public Page<RestauranteOutputDTO> buscarPorNome(Pageable page, @RequestParam(value = "nome") String name) {
-        return restauranteService.buscarPorNome(page, name);
+    public List<RestauranteOutputDTO> buscarPorNome(@RequestParam(value = "nome") String name) {
+        return restauranteService.buscarPorNome(name);
     }
 
     @GetMapping("/por-nome/frete-gratis")

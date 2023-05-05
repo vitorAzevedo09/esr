@@ -5,6 +5,7 @@ import static com.algaworks.algafoodapi.infrastructure.repository.RestauranteSpe
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -43,9 +44,9 @@ public class RestauranteService {
         return restauranteAssembler.toPageOutputDto(restauranteRepository.findAll(page));
     }
 
-    public Page<RestauranteOutputDTO> buscarPorNome(Pageable page, String name) {
-        Page<Restaurante> restaurantes = restauranteRepository.consultarPorNome(name, page);
-        return restaurantes.map(r -> restauranteAssembler.toOutputDto(r));
+    public List<RestauranteOutputDTO> buscarPorNome(String name) {
+        List<Restaurante> restaurantes = restauranteRepository.consultarPorNome(name);
+        return restaurantes.stream().map(r -> restauranteAssembler.toOutputDto(r)).toList();
     }
 
     public Page<RestauranteOutputDTO> buscarPorNomeEFreteGratis(Pageable page, String name) {

@@ -1,24 +1,26 @@
+SET FOREIGN_KEY_CHECKS=0;
+
 delete from estado;
 delete from cidade;
-delete from restaurante;
 delete from cozinha;
+delete from restaurante;
 
 
 
-insert ignore into cozinha (nome) values ('Tailandesa');
-insert ignore into cozinha (nome) values ('Indiana');
+insert ignore into cozinha (id, nome) values (1, 'Tailandesa');
+insert ignore into cozinha (id, nome) values (2, 'Indiana');
 
-insert ignore into restaurante (nome, taxa_frete, cozinha_id)
-  values ('Thai Gourmet', 10, 1);
-insert ignore into restaurante (nome, taxa_frete, cozinha_id) 
-  values ('Thai Delivery', 9.15, 1);
-insert ignore into restaurante (nome, taxa_frete, cozinha_id) 
-  values ('Tuk Tuk Comida', 15.73, 2);
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id)
+  values (1, 'Thai Gourmet', 10, 1);
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id) 
+  values (2, 'Thai Delivery', 9.15, 1);
+insert ignore into restaurante (id, nome, taxa_frete, cozinha_id) 
+  values (3, 'Tuk Tuk Comida', 15.73, 2);
 
   
-insert ignore into estado (nome) values ('Piaui');
-insert ignore into estado (nome) values ('Maranhao');
+insert ignore into estado (id, nome) values (1, 'Piaui');
+insert ignore into estado (id, nome) values (2, 'Maranhao');
 
 
-insert ignore into cidade (nome) values ('Parnaiba');
-insert ignore into cidade (nome) values ('Araioses');
+insert ignore into cidade (id, nome, estado_id) values (1, 'Parnaiba', 1);
+insert ignore into cidade (id, nome, estado_id) values (2, 'Araioses', 2);
