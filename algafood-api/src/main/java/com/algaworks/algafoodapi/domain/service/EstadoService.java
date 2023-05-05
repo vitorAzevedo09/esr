@@ -32,7 +32,7 @@ public class EstadoService {
   public EstadoOutputDTO getOne(final Long id) {
     return estadoRespository.findById(id).map(e -> estadoAssembler.toOutputDTO(e))
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            String.format("Estado não encontrado com o id " + id, id)));
+            String.format("Estado com o id " + id + " não encontrado ", id)));
 
   }
 
