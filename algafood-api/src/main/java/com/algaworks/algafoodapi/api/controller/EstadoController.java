@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,5 +39,11 @@ public class EstadoController {
   @PostMapping
   public ResponseEntity<EstadoOutputDTO> criar(@RequestBody EstadoInputDTO estadoIn) {
     return ResponseEntity.ok(estadoService.create(estadoIn));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<EstadoOutputDTO> atualizar(@PathVariable("id") final Long id,
+      @RequestBody EstadoInputDTO estadoIn) {
+    return ResponseEntity.ok(estadoService.update(id, estadoIn));
   }
 }

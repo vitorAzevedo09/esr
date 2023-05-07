@@ -1,31 +1,45 @@
 package com.algaworks.algafoodapi.api.exceptionhandler;
 
-import java.time.LocalDateTime;
-
 /**
  * Problema
  */
-public record Problema(LocalDateTime dataHora, String mensagem) {
+public record Problema(Integer status, String type, String title, String detail) {
 
   public static final class Builder {
-    LocalDateTime dataHora;
-    String mensagem;
+    private Integer status;
+    private String type;
+    private String title;
+    private String detail;
 
     public Builder() {
     }
 
-    public Builder dataHora(LocalDateTime dataHora) {
-      this.dataHora = dataHora;
+    public static Builder newInstance() {
+      return new Builder();
+    }
+
+    public Builder status(Integer status) {
+      this.status = status;
       return this;
     }
 
-    public Builder mensagem(String mensagem) {
-      this.mensagem = mensagem;
+    public Builder type(String type) {
+      this.type = type;
+      return this;
+    }
+
+    public Builder title(String title) {
+      this.title = title;
+      return this;
+    }
+
+    public Builder detail(String detail) {
+      this.detail = detail;
       return this;
     }
 
     public Problema build() {
-      return new Problema(dataHora, mensagem);
+      return new Problema(status, type, title, detail);
     }
   }
 }

@@ -1,7 +1,5 @@
 package com.algaworks.algafoodapi.api.exceptionhandler;
 
-import java.time.LocalDateTime;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +16,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler({ Exception.class })
-  public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-    Problema problema = new Problema.Builder()
-        .dataHora(LocalDateTime.now())
-        .mensagem(ex.toString()).build();
+  public ResponseEntity<Object> handleAll(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+    Problema problema = Problema.Builder.newInstance()
+        .title(status.getReasonPhrase())
+        .status(status.value()).build();
+
     return new ResponseEntity<Object>(
         problema, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
@@ -29,8 +29,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
       HttpHeaders headers, HttpStatus status, WebRequest request) {
-    Problema problema = new Problema.Builder()
-        .dataHora(LocalDateTime.now()).mensagem("Required request body is missing").build();
+
+    Problema problema = Problema.Builder.newInstance()
+        .title("Entidade não encontrada")
+        .detail(status.getReasonPhrase())
+        .status(status.value()).build();
+
     return new ResponseEntity<Object>(problema, new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }
 

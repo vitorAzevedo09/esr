@@ -1,5 +1,7 @@
 package com.algaworks.algafoodapi.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,10 +38,25 @@ public class EstadoService {
 
   }
 
+  @Transactional
   public EstadoOutputDTO create(EstadoInputDTO estadoIn) {
     Estado estado = estadoAssembler.toEntity(estadoIn);
     Estado estadoSaved = estadoRespository.save(estado);
     return estadoAssembler.toOutputDTO(estadoSaved);
+  }
+
+  @Transactional
+  public EstadoOutputDTO update(final Long id, EstadoInputDTO estadoIn) {
+    if (!estadoRespository.existsById(id)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          String.format("Estado com o id " + id + " não encontrado", id));
+    }
+
+    Estado estado = estadoAssembler.toEntity(estadoIn);
+    estado.setId(id);
+
+    Estado estadoUpdate = estadoRespository.save(estado);
+    return estadoAssembler.toOutputDTO(estadoUpdate);
   }
 
 }
