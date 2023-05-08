@@ -12,7 +12,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.algaworks.algafoodapi.api.assembler.EstadoAssembler;
 import com.algaworks.algafoodapi.api.dto.estado.EstadoInputDTO;
 import com.algaworks.algafoodapi.api.dto.estado.EstadoOutputDTO;
+import com.algaworks.algafoodapi.domain.model.Cidade;
 import com.algaworks.algafoodapi.domain.model.Estado;
+import com.algaworks.algafoodapi.domain.repository.CidadeRepository;
 import com.algaworks.algafoodapi.domain.repository.EstadoRespository;
 
 /**
@@ -23,6 +25,9 @@ public class EstadoService {
 
   @Autowired
   private EstadoRespository estadoRespository;
+
+  @Autowired
+  private CidadeRepository cidadeRepository;
 
   @Autowired
   private EstadoAssembler estadoAssembler;
@@ -59,4 +64,17 @@ public class EstadoService {
     return estadoAssembler.toOutputDTO(estadoUpdate);
   }
 
+  @Transactional
+  public EstadoOutputDTO delete(final Long id) {
+    Estado estado = estadoRespository.findById(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+            String.format("Estado com o id " + id + " não encontrado", id)));
+
+    for (Cidade cidade : estado.getCidades()) {
+      cidadeRepository.delete(cidade);
+    }
+
+    estadoRespository.delete(estado);
+    return estadoAssembler.toOutputDTO(estado);
+  }
 }

@@ -22,8 +22,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         .title(status.getReasonPhrase())
         .status(status.value()).build();
 
-    return new ResponseEntity<Object>(
-        problema, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<Object>(problema, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Override

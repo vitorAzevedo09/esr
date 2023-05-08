@@ -7,14 +7,17 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.algaworks.algafoodapi.api.assembler.CozinhaAssembler;
 import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputDTO;
 import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaOutputDTO;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
+import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
-
+import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 
 /**
  * CozinhaService
@@ -28,18 +31,20 @@ public class CozinhaService {
     @Autowired
     private CozinhaAssembler cozinhaAssembler;
 
-    public Page<CozinhaOutputDTO> listar(Pageable page){
+    @Autowired
+    private RestauranteRepository restauranteRepository;
+
+    public Page<CozinhaOutputDTO> listar(Pageable page) {
         Page<Cozinha> modelCozinhas = cozinhaRepository.findAll(page);
-        return cozinhaAssembler.toPageOutputDto(modelCozinhas); 
+        return cozinhaAssembler.toPageOutputDto(modelCozinhas);
     }
 
-    public Optional<CozinhaOutputDTO> buscar(Long id){
+    public Optional<CozinhaOutputDTO> buscar(Long id) {
         return cozinhaRepository.findById(id).map(cozinhaAssembler::toOutputDto);
     }
 
-
     @Transactional
-    public Optional<CozinhaOutputDTO> criar(CozinhaInputDTO cozinhaInput){
+    public Optional<CozinhaOutputDTO> criar(CozinhaInputDTO cozinhaInput) {
         Cozinha cozinha = cozinhaAssembler.toEntity(cozinhaInput);
         Cozinha cozinhaFromDb = cozinhaRepository.save(cozinha);
         return Optional.of(cozinhaAssembler.toOutputDto(cozinhaFromDb));
@@ -53,10 +58,16 @@ public class CozinhaService {
     }
 
     @Transactional
-    public Optional<CozinhaOutputDTO> deletar(Long id) {
-        Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
-        cozinhaRepository.delete(cozinha.get());
-        return Optional.of(cozinhaAssembler.toOutputDto(cozinha.get()));
+    public CozinhaOutputDTO deletar(Long id) {
+        Cozinha cozinha = cozinhaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Cozinha com id " + id + " não encontrada", id)));
+        for (Restaurante restaurante : cozinha.getRestaurantes()) {
+            restauranteRepository.delete(restaurante);
+        }
+
+        cozinhaRepository.delete(cozinha);
+        return cozinhaAssembler.toOutputDto(cozinha);
     }
-    
+
 }

@@ -1,10 +1,14 @@
 package com.algaworks.algafoodapi.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * Cozinha
@@ -19,6 +23,9 @@ public class Cozinha {
     @Column(nullable = false)
     private String nome;
 
+    @OneToMany(mappedBy = "id")
+    private List<Restaurante> restaurantes = new ArrayList<Restaurante>();
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -30,7 +37,16 @@ public class Cozinha {
     public Long getId() {
         return id;
     }
+
     public String getNome() {
         return nome;
+    }
+
+    public List<Restaurante> getRestaurantes() {
+        return restaurantes;
+    }
+
+    public void setRestaurantes(List<Restaurante> restaurantes) {
+        this.restaurantes = restaurantes;
     }
 }
