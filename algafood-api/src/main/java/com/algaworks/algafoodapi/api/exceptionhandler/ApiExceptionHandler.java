@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler({ Exception.class, DataIntegrityViolationException.class })
+  @ExceptionHandler({ Exception.class })
   public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
 
     Problema problema = Problema.Builder.newInstance()
@@ -24,6 +24,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         .status(HttpStatus.INTERNAL_SERVER_ERROR.value()).build();
 
     return handleExceptionInternal(ex, problema, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+  }
+
+  @ExceptionHandler({ DataIntegrityViolationException.class })
+  public ResponseEntity<Object> handleDataIntegrityViolationException(Exception ex, WebRequest request) {
+    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+    Problema problema = Problema.Builder.newInstance()
+        .title("Data integrity violation")
+        .status(status.value())
+        .detail(ex.getMessage())
+        .build();
+
+    return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+
   }
 
   @Override

@@ -1,5 +1,7 @@
 package com.algaworks.algafoodapi.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,9 +38,38 @@ public class CidadeService {
     return cidadeAssembler.toOutputDTO(cidade);
   }
 
+  @Transactional
   public CidadeOutputDTO create(CidadeInputDTO cidadeIN) {
     Cidade cidade = cidadeAssembler.toEntity(cidadeIN);
     Cidade cidadeSaved = cidadeRepository.save(cidade);
     return cidadeAssembler.toOutputDTO(cidadeSaved);
   }
+
+  @Transactional
+  public CidadeOutputDTO update(final Long id, CidadeInputDTO cidadeIn) {
+
+    if (!cidadeRepository.existsById(id)) {
+      new ResponseStatusException(HttpStatus.NOT_FOUND,
+          String.format("Cidade with id " + id + " not found", id));
+    }
+
+    Cidade cidadeUpdate = cidadeAssembler.toEntity(cidadeIn);
+    cidadeUpdate.setId(id);
+
+    Cidade cidadeUpdated = cidadeRepository.save(cidadeUpdate);
+
+    return cidadeAssembler.toOutputDTO(cidadeUpdated);
+  }
+
+  @Transactional
+  public CidadeOutputDTO deletar(final Long id) {
+    Cidade cidade = cidadeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        String.format("Cidade with id " + id + " not found", id)));
+
+    cidadeRepository.deleteById(id);
+
+    return cidadeAssembler.toOutputDTO(cidade);
+
+  }
+
 }

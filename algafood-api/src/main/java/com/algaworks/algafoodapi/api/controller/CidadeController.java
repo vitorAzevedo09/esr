@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,4 +40,11 @@ public class CidadeController {
   public ResponseEntity<CidadeOutputDTO> criar(@RequestBody CidadeInputDTO cidadeIN) {
     return ResponseEntity.ok(cidadeService.create(cidadeIN));
   }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<CidadeOutputDTO> atualizar(@PathVariable("id") final Long id,
+      @RequestBody CidadeInputDTO cidadeIn) {
+    return ResponseEntity.ok(cidadeService.update(id, cidadeIn));
+  }
+
 }

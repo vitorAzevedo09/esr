@@ -15,7 +15,6 @@ import com.algaworks.algafoodapi.api.assembler.CozinhaAssembler;
 import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaInputDTO;
 import com.algaworks.algafoodapi.api.dto.cozinha.CozinhaOutputDTO;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
-import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 
