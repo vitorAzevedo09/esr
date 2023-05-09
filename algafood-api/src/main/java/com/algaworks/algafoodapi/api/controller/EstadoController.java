@@ -1,5 +1,7 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,13 +40,13 @@ public class EstadoController {
   }
 
   @PostMapping
-  public ResponseEntity<EstadoOutputDTO> criar(@RequestBody EstadoInputDTO estadoIn) {
+  public ResponseEntity<EstadoOutputDTO> criar(@Valid @RequestBody EstadoInputDTO estadoIn) {
     return ResponseEntity.ok(estadoService.create(estadoIn));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<EstadoOutputDTO> atualizar(@PathVariable("id") final Long id,
-      @RequestBody EstadoInputDTO estadoIn) {
+      @Valid @RequestBody EstadoInputDTO estadoIn) {
     return ResponseEntity.ok(estadoService.update(id, estadoIn));
   }
 

@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 /**
  * Cidade
@@ -18,8 +19,10 @@ public class Cidade {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotNull
   private String nome;
 
+  @NotNull
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "estado_id", referencedColumnName = "id")
   private Estado estado;

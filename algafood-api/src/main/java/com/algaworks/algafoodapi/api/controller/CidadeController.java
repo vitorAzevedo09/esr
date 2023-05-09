@@ -1,9 +1,12 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,14 +40,19 @@ public class CidadeController {
   }
 
   @PostMapping
-  public ResponseEntity<CidadeOutputDTO> criar(@RequestBody CidadeInputDTO cidadeIN) {
+  public ResponseEntity<CidadeOutputDTO> criar(@Valid @RequestBody CidadeInputDTO cidadeIN) {
     return ResponseEntity.ok(cidadeService.create(cidadeIN));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<CidadeOutputDTO> atualizar(@PathVariable("id") final Long id,
-      @RequestBody CidadeInputDTO cidadeIn) {
+      @Valid @RequestBody CidadeInputDTO cidadeIn) {
     return ResponseEntity.ok(cidadeService.update(id, cidadeIn));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<CidadeOutputDTO> deletar(@PathVariable("id") final Long id) {
+    return ResponseEntity.ok(cidadeService.deletar(id));
   }
 
 }
