@@ -28,7 +28,7 @@ public class Restaurante {
     private BigDecimal taxaFrete;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "cozinha_id", referencedColumnName = "id")
     private Cozinha cozinha;
 
     public Long getId() {

@@ -23,7 +23,7 @@ public class Cozinha {
     @Column(nullable = false)
     private String nome;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "cozinha")
     private List<Restaurante> restaurantes = new ArrayList<Restaurante>();
 
     public void setId(Long id) {

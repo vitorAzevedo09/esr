@@ -62,10 +62,8 @@ public class CozinhaService {
         Cozinha cozinha = cozinhaRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Cozinha com id " + id + " não encontrada", id)));
-        for (Restaurante restaurante : cozinha.getRestaurantes()) {
-            restauranteRepository.delete(restaurante);
-        }
 
+        restauranteRepository.deleteAll(cozinha.getRestaurantes());
         cozinhaRepository.delete(cozinha);
         return cozinhaAssembler.toOutputDto(cozinha);
     }

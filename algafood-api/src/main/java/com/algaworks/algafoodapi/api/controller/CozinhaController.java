@@ -59,7 +59,7 @@ public class CozinhaController {
                 .orElse(ResponseEntity.internalServerError().build());
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CozinhaOutputDTO> name(@PathVariable Long id) {
         return ResponseEntity.ok(cozinhaService.deletar(id));
     }

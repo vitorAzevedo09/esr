@@ -1,5 +1,6 @@
 package com.algaworks.algafoodapi.api.exceptionhandler;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler({ Exception.class })
-  public ResponseEntity<Object> handleAll(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+  @ExceptionHandler({ Exception.class, DataIntegrityViolationException.class })
+  public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
 
     Problema problema = Problema.Builder.newInstance()
-        .title(status.getReasonPhrase())
-        .status(status.value()).build();
+        .title(ex.getMessage())
+        .status(HttpStatus.INTERNAL_SERVER_ERROR.value()).build();
 
-    return new ResponseEntity<Object>(problema, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    return handleExceptionInternal(ex, problema, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
   }
 
   @Override

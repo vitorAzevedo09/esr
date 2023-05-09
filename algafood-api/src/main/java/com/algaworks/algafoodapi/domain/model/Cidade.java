@@ -21,7 +21,7 @@ public class Cidade {
   private String nome;
 
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "estado_id")
+  @JoinColumn(name = "estado_id", referencedColumnName = "id")
   private Estado estado;
 
   public Long getId() {
