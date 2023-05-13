@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -19,6 +20,8 @@ public class Cozinha {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Valid
+    @NotNull
     private Long id;
 
     @NotNull

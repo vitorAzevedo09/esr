@@ -1,10 +1,18 @@
 package com.algaworks.algafoodapi.api.exceptionhandler;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -45,9 +53,58 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
       HttpHeaders headers, HttpStatus status, WebRequest request) {
 
     Problema problema = Problema.Builder.newInstance()
-        .title("Entidade não encontrada")
+        .title("DADOS REQUISITANTES INVÀLIDOS")
         .detail(status.getReasonPhrase())
         .status(status.value()).build();
+
+    return new ResponseEntity<Object>(problema, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Object> handleConstraintViolationException(
+      ConstraintViolationException constraintViolationException) {
+
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+
+    Set<ConstraintViolation<?>> violations = constraintViolationException.getConstraintViolations();
+
+    String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente";
+
+    List<Problema.Field> problemaFields = violations.stream().map(violation -> Problema.Field.Builder.newInstance()
+        .name(violation.getPropertyPath().toString())
+        .userMessage(violation.getMessage())
+        .build()).toList();
+
+    Problema problema = Problema.Builder.newInstance()
+        .title("Error no request")
+        .status(status.value())
+        .type("DADOS INVÀLIDOS")
+        .detail(detail)
+        .fields(problemaFields)
+        .build();
+
+    return new ResponseEntity<>(problema, status);
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+      HttpHeaders headers, HttpStatus status, WebRequest request) {
+    String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente";
+
+    BindingResult bindingResults = ex.getBindingResult();
+
+    List<Problema.Field> problemaFields = bindingResults.getFieldErrors().stream()
+        .map(fieldErr -> Problema.Field.Builder.newInstance()
+            .name(fieldErr.getField())
+            .userMessage(fieldErr.getDefaultMessage()).build())
+        .toList();
+
+    Problema problema = Problema.Builder.newInstance()
+        .status(status.value())
+        .type("DADOS INVÀLIDOS")
+        .detail(detail)
+        .fields(problemaFields)
+        .build();
 
     return new ResponseEntity<Object>(problema, new HttpHeaders(), HttpStatus.BAD_REQUEST);
   }

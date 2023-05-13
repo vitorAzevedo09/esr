@@ -1,15 +1,62 @@
 package com.algaworks.algafoodapi.api.exceptionhandler;
 
+import java.util.List;
+
 /**
  * Problema
  */
-public record Problema(Integer status, String type, String title, String detail) {
+public record Problema(Integer status, String type, String title, String detail, List<Field> fields) {
+
+  public static class Field {
+    private String name;
+    private String userMessage;
+
+    private Field(String name, String userMessage) {
+      this.name = name;
+      this.userMessage = userMessage;
+    }
+
+    public static final class Builder {
+      private String name;
+      private String userMessage;
+
+      public Builder() {
+      }
+
+      public static Builder newInstance() {
+        return new Builder();
+      }
+
+      public Builder name(String name) {
+        this.name = name;
+        return this;
+      }
+
+      public Builder userMessage(String userMessage) {
+        this.userMessage = userMessage;
+        return this;
+      }
+
+      public Field build() {
+        return new Field(name, userMessage);
+      }
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public String getUserMessage() {
+      return userMessage;
+    }
+  }
 
   public static final class Builder {
     private Integer status;
     private String type;
     private String title;
     private String detail;
+    private List<Field> fields;
 
     public Builder() {
     }
@@ -38,8 +85,13 @@ public record Problema(Integer status, String type, String title, String detail)
       return this;
     }
 
+    public Builder fields(List<Field> fields) {
+      this.fields = fields;
+      return this;
+    }
+
     public Problema build() {
-      return new Problema(status, type, title, detail);
+      return new Problema(status, type, title, detail, fields);
     }
   }
 }

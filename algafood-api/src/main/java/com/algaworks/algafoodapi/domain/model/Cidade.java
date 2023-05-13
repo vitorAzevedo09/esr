@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,6 +18,8 @@ public class Cidade {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Valid
+  @NotNull
   private Long id;
 
   @NotNull
