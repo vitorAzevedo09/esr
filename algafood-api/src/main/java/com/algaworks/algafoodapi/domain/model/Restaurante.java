@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,6 +35,9 @@ public class Restaurante {
 
     @Column
     private boolean ativo = Boolean.TRUE;
+
+    @Embedded
+    private Endereco endereco;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cozinha_id", referencedColumnName = "id")

@@ -3,6 +3,12 @@ create table restaurante (
   nome varchar(255) not null,
   taxa_frete decimal(19,2) not null,
   cozinha_id bigint not null,
+  endereco_cidade_id bigint not null,
+  endereco_cep varchar(11) not null,
+  endereco_complemento varchar(255),
+  endereco_logradouro varchar(255),
+  endereco_numero varchar(11) not null,
+  endereco_bairro varchar(255) not null,
   primary key (id)
 ) engine=InnoDB;
 
