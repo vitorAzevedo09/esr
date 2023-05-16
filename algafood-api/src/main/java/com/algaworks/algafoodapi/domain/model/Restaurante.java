@@ -32,9 +32,20 @@ public class Restaurante {
     @Column(nullable = false)
     private BigDecimal taxaFrete;
 
+    @Column
+    private boolean ativo = Boolean.TRUE;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cozinha_id", referencedColumnName = "id")
     private Cozinha cozinha;
+
+    public void active() {
+        this.ativo = true;
+    }
+
+    public void deactive() {
+        this.ativo = false;
+    }
 
     public Long getId() {
         return id;
@@ -67,4 +78,9 @@ public class Restaurante {
     public void setCozinha(Cozinha cozinha) {
         this.cozinha = cozinha;
     }
+
+    public boolean getAtivo() {
+        return this.ativo;
+    }
+
 }

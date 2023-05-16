@@ -14,8 +14,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.algaworks.algafoodapi.api.assembler.RestauranteAssembler;
 import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteOutputDTO;
@@ -111,5 +113,19 @@ public class RestauranteService {
 
         RestauranteOutputDTO restauranteOUT = restauranteAssembler.toOutputDto(restauranteDB.get());
         return Optional.of(restauranteOUT);
+    }
+
+    @Transactional
+    public void active(final Long id) {
+        Restaurante restaurante = restauranteRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        restaurante.active();
+    }
+
+    @Transactional
+    public void deactive(final Long id) {
+        Restaurante restaurante = restauranteRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        restaurante.deactive();
     }
 }

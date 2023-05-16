@@ -94,4 +94,15 @@ public class RestauranteController {
     public ResponseEntity<RestauranteOutputDTO> deletar(@PathVariable Long id) {
         return ResponseEntity.ok(restauranteService.deletar(id).get());
     }
+
+    @PutMapping("/{id}/ativo")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void ativar(@PathVariable("id") final Long id) {
+        restauranteService.active(id);
+    }
+
+    @DeleteMapping("/{id}/ativo")
+    public void desativar(@PathVariable("id") final Long id) {
+        restauranteService.deactive(id);
+    }
 }
