@@ -47,6 +47,10 @@ public class Endereco {
     return cidade;
   }
 
+  public String getBairro() {
+    return bairro;
+  }
+
   public void setCep(String cep) {
     this.cep = cep;
   }
@@ -65,6 +69,10 @@ public class Endereco {
 
   public void setComplemento(String complemento) {
     this.complemento = complemento;
+  }
+
+  public void setBairro(String bairro) {
+    this.bairro = bairro;
   }
 
 }

@@ -17,11 +17,11 @@ import com.algaworks.algafoodapi.domain.model.Restaurante;
 public class RestauranteAssembler {
 
     public RestauranteOutputDTO toOutputDto(Restaurante restaurante) {
-        return new RestauranteOutputDTO(
-                restaurante.getId(),
+        RestauranteOutputDTO restauranteOut = new RestauranteOutputDTO(restaurante.getId(),
                 restaurante.getNome(),
                 restaurante.getTaxaFrete(),
                 restaurante.getAtivo());
+        return restauranteOut;
     }
 
     /**
