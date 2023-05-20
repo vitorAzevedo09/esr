@@ -32,6 +32,7 @@ public class CozinhaController {
     private CozinhaService cozinhaService;
 
     @GetMapping
+    @ResponseStatus(code = HttpStatus.OK)
     public Page<CozinhaOutputDTO> listar(Pageable page) {
         return cozinhaService.listar(page);
     }
