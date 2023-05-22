@@ -21,7 +21,6 @@ public class Cozinha {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Valid
-    @NotNull
     private Long id;
 
     @NotNull
