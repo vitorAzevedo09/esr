@@ -1,72 +1,66 @@
 package com.algaworks.algafoodapi;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasSize;
-
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
-import com.algaworks.algafoodapi.domain.model.Cozinha;
-import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
+import com.algaworks.algafoodapi.domain.model.FormaPagamento;
+import com.algaworks.algafoodapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafoodapi.util.DatabaseCleaner;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+/**
+ * FormaPagamentoIT
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CozinhaIT {
+public class FormaPagamentoIT {
 
   @LocalServerPort
-  private int port;
+  private int serverPort;
 
   @Autowired
   private DatabaseCleaner databaseCleaner;
 
-  @Autowired
-  private CozinhaRepository cozinhaRepository;
+  private void prepararDados() {
+    FormaPagamento formaPagamento1 = new FormaPagamento();
+    formaPagamento1.setDescricao("TESTE 1");
+
+    FormaPagamento formaPagamento2 = new FormaPagamento();
+    formaPagamento2.setDescricao("TESTE 2");
+  }
 
   @BeforeEach
   public void setUp() {
-    RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    RestAssured.port = port;
-    RestAssured.basePath = "/cozinhas";
+    enableLoggingOfRequestAndResponseIfValidationFails();
+    port = serverPort;
+    basePath = "/cozinhas";
 
     databaseCleaner.clearTables();
     prepararDados();
   }
 
-  private void prepararDados() {
-    Cozinha cozinha1 = new Cozinha();
-    cozinha1.setNome("Tailandesa");
-    cozinhaRepository.save(cozinha1);
-
-    Cozinha cozinha2 = new Cozinha();
-    cozinha2.setNome("Americana");
-    cozinhaRepository.save(cozinha2);
-
-  }
-
   @Test
-  public void deveRetornarStatus200_QuandoConsultarCozinhas() {
-    RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+  public void deveRetornarStatus200_QuandoConsultarFormasPagamento() {
 
     given()
         .accept(ContentType.JSON)
         .when()
         .get()
         .then()
-        .statusCode(HttpStatus.OK.value());
+        .statusCode(HttpStatus.SC_OK);
   }
 
   @Test
   public void deveConter2Cozinhas_QuandoConsultarCozinhas() {
-    RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
     given()
         .accept(ContentType.JSON)
