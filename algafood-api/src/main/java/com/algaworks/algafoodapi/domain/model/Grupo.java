@@ -26,6 +26,15 @@ public class Grupo {
   @JoinTable(name = "grupo_permissao", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
   private List<Permissao> permissoes = new ArrayList<>();
 
+  public Grupo() {
+    super();
+  }
+
+  public Grupo(Long id, String nome) {
+    this.id = id;
+    this.nome = nome;
+  }
+
   public void setId(Long id) {
     this.id = id;
   }
