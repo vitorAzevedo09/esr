@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafoodapi.api.assembler.UsuarioAssembler;
+import com.algaworks.algafoodapi.api.dto.usuario.SenhaInput;
 import com.algaworks.algafoodapi.api.dto.usuario.UsuarioInputComSenha;
 import com.algaworks.algafoodapi.api.dto.usuario.UsuarioInputDTO;
 import com.algaworks.algafoodapi.api.dto.usuario.UsuarioOutputDTO;
@@ -21,6 +23,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 
 /**
  * UsuarioController
@@ -49,6 +52,7 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public UsuarioOutputDTO add(@RequestBody @Valid UsuarioInputComSenha inputUser) {
         Usuario usuario = usuarioAssembler.toEntity(inputUser);
         usuario = usuarioService.salvar(usuario);
@@ -63,5 +67,11 @@ public class UsuarioController {
         user.setId(actualUser.getId());
         user = usuarioService.salvar(user);
         return usuarioAssembler.toOutputDto(user);
+    }
+
+    @PutMapping("/{id}/atualizar-senha")
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void changePassword(@PathVariable Long id,@RequestBody @Valid SenhaInput senha) {
+        usuarioService.alterarSenha(id, senha.senhaAtual(), senha.novaSenha());
     }
 }
