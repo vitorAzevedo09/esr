@@ -42,6 +42,70 @@ public class Usuario {
     @JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "grupo_id"))
     private List<Grupo> grupos = new ArrayList<>();
 
+    public Usuario(Builder builder){
+        this.id = builder.id;
+        this.nome = builder.nome;
+        this.email = builder.email;
+        this.senha = builder.senha;
+        this.dataCadastro = builder.dataCadastro;
+        this.grupos = builder.grupos;
+    }
+
+    public static class Builder {
+
+        private Long id;
+
+        private String nome;
+
+        private String email;
+
+        private String senha;
+
+        private LocalDateTime dataCadastro;
+
+        private List<Grupo> grupos = new ArrayList<>();
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setNome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setSenha(String senha) {
+            this.senha = senha;
+            return this;
+        }
+
+        public Builder setGrupos(List<Grupo> grupos) {
+            this.grupos = grupos;
+            return this;
+        }
+
+        public Builder setDataCadastro(LocalDateTime dataCadastro) {
+            this.dataCadastro = dataCadastro;
+            return this;
+        }
+
+        public static Builder newInstance(){
+            return new Builder();
+        }
+
+        private Builder(){}
+
+        public Usuario build(){
+            return new Usuario(this);
+        }
+    }
+
     public List<Grupo> getGrupos() {
         return grupos;
     }
@@ -90,13 +154,12 @@ public class Usuario {
         this.dataCadastro = dataCadastro;
     }
 
+    public boolean senhaCoincideCom(String senha) {
+        return getSenha().equals(senha);
+    }
 
-	public boolean senhaCoincideCom(String senha) {
-		return getSenha().equals(senha);
-	}
-	
-	public boolean senhaNaoCoincideCom(String senha) {
-		return !senhaCoincideCom(senha);
-	}
+    public boolean senhaNaoCoincideCom(String senha) {
+        return !senhaCoincideCom(senha);
+    }
 
 }
