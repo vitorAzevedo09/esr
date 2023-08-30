@@ -14,14 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsuarioAssembler {
 
-    public Usuario toEntity(UsuarioInputDTO input) {
-        return Usuario.Builder
-                .newInstance()
-                .setNome(input.nome())
-                .setEmail(input.email())
-                .build();
-    }
-
     public Usuario toEntity(UsuarioInputComSenha input) {
         return Usuario.Builder
                 .newInstance()
@@ -29,6 +21,12 @@ public class UsuarioAssembler {
                 .setEmail(input.email())
                 .setSenha(input.senha())
                 .build();
+    }
+
+    public Usuario copytoEntity(UsuarioInputDTO input, Usuario user) {
+        user.setNome(input.nome());
+        user.setEmail(input.email());
+        return user;
     }
 
     public UsuarioOutputDTO toOutputDto(Usuario domainModel) {
