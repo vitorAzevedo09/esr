@@ -20,11 +20,13 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.algaworks.algafoodapi.api.assembler.RestauranteAssembler;
-import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteOutputDTO;
 import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteInputDTO;
+import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteOutputDTO;
 import com.algaworks.algafoodapi.domain.model.Cozinha;
+import com.algaworks.algafoodapi.domain.model.FormaPagamento;
 import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
+import com.algaworks.algafoodapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
 
 /**
@@ -38,6 +40,10 @@ public class RestauranteService {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
+
+
+    @Autowired
+    private FormaPagamentoRepository formaPagamentoRepository;
 
     @Autowired
     private RestauranteAssembler restauranteAssembler;
@@ -129,7 +135,11 @@ public class RestauranteService {
     }
 
     @Transactional
-    public void removePaymentMethod(Long idRestaurant, Long idPaymentMethod){
-        Restaurante restauranteDB = buscar(idRestaurant);
+    public void removePaymentMethod(Long idRestaurant, Long idPaymentMethod) {
+        Restaurante restaurant = findOrFail(idRestaurant)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        FormaPagamento paymentMethod = formaPagamentoRepository.findById(idPaymentMethod).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        restaurant.getFormasPagamento().remove(paymentMethod);
+
     }
 }
