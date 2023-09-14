@@ -1,5 +1,7 @@
 package com.algaworks.algafoodapi.domain.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,10 @@ public class UsuarioService {
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
+        Optional<Usuario> exist = usuarioRepository.findByEmail(usuario.getEmail());
+        if(exist.isPresent() && !exist.get().equals(usuario)){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"Usuario com este email já existente" );
+        }
         return usuarioRepository.save(usuario);
     }
 

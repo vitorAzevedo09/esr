@@ -63,15 +63,16 @@ public class UsuarioController {
     public UsuarioOutputDTO update(@PathVariable Long id,
             @RequestBody @Valid UsuarioInputDTO userInput) {
         Usuario actualUser = usuarioService.buscarOuFalhar(id);
-        Usuario user = usuarioAssembler.copytoEntity(userInput,actualUser);
+        Usuario user = usuarioAssembler.copytoEntity(userInput, actualUser);
         user.setId(actualUser.getId());
         user = usuarioService.salvar(user);
         return usuarioAssembler.toOutputDto(user);
     }
 
     @PutMapping("/{id}/atualizar-senha")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void changePassword(@PathVariable Long id,@RequestBody @Valid SenhaInput senha) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changePassword(@PathVariable Long id, @RequestBody @Valid SenhaInput senha) {
         usuarioService.alterarSenha(id, senha.senhaAtual(), senha.novaSenha());
     }
+
 }
