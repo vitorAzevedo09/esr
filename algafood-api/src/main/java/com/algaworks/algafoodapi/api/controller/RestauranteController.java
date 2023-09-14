@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteOutputDTO;
+import com.algaworks.algafoodapi.api.assembler.RestauranteAssembler;
 import com.algaworks.algafoodapi.api.dto.restaurante.RestauranteInputDTO;
 import com.algaworks.algafoodapi.domain.service.RestauranteService;
 
@@ -36,6 +37,9 @@ public class RestauranteController {
 
     @Autowired
     private RestauranteService restauranteService;
+
+    @Autowired
+    private RestauranteAssembler restauranteAssembler;
 
     @GetMapping
     public Page<RestauranteOutputDTO> listar(Pageable page) {
@@ -57,7 +61,7 @@ public class RestauranteController {
     public ResponseEntity<RestauranteOutputDTO> buscar(
             @PathVariable Long id) {
         return restauranteService.buscar(id)
-                .map(ResponseEntity::ok)
+                .map(r -> ResponseEntity.ok(restauranteAssembler.toOutputDto(r)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

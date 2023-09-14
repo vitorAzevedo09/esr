@@ -57,10 +57,9 @@ public class RestauranteService {
         return restaurantes.map(r -> restauranteAssembler.toOutputDto(r));
     }
 
-    public Optional<RestauranteOutputDTO> buscar(Long id) {
+    public Optional<Restaurante> buscar(Long id) {
         Optional<Restaurante> restauranteDB = restauranteRepository.findById(id);
-        return restauranteDB.map(r -> Optional.of(restauranteAssembler.toOutputDto(r)))
-                .orElse(null);
+        return restauranteDB;
     }
 
     @Transactional
