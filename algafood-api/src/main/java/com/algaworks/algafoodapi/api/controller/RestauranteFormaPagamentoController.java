@@ -31,7 +31,7 @@ public class RestauranteFormaPagamentoController {
 
     @GetMapping
     public List<FormaPagamentoOutput> getAllPaymentMethod(@PathVariable Long id) {
-        Optional<Restaurante> restaurante = restauranteService.buscar(id);
+        Optional<Restaurante> restaurante = restauranteService.findOrFail(id);
         Restaurante restauranteDB = restaurante.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return restauranteDB.getFormasPagamento().stream()
                 .map(fp -> formaPagamentoAssembler.toOutputDTO(fp))

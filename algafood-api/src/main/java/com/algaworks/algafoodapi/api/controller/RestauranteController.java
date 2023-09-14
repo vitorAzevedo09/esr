@@ -60,7 +60,7 @@ public class RestauranteController {
     @GetMapping("/{id}")
     public ResponseEntity<RestauranteOutputDTO> buscar(
             @PathVariable Long id) {
-        return restauranteService.buscar(id)
+        return restauranteService.findOrFail(id)
                 .map(r -> ResponseEntity.ok(restauranteAssembler.toOutputDto(r)))
                 .orElse(ResponseEntity.notFound().build());
     }

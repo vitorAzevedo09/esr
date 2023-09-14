@@ -57,7 +57,7 @@ public class RestauranteService {
         return restaurantes.map(r -> restauranteAssembler.toOutputDto(r));
     }
 
-    public Optional<Restaurante> buscar(Long id) {
+    public Optional<Restaurante> findOrFail(Long id) {
         Optional<Restaurante> restauranteDB = restauranteRepository.findById(id);
         return restauranteDB;
     }
@@ -126,5 +126,10 @@ public class RestauranteService {
         Restaurante restaurante = restauranteRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         restaurante.deactive();
+    }
+
+    @Transactional
+    public void removePaymentMethod(Long idRestaurant, Long idPaymentMethod){
+        Restaurante restauranteDB = buscar(idRestaurant);
     }
 }
