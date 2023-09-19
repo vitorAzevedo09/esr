@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,7 @@ import com.algaworks.algafoodapi.domain.model.Restaurante;
 import com.algaworks.algafoodapi.domain.repository.CozinhaRepository;
 import com.algaworks.algafoodapi.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafoodapi.domain.repository.RestauranteRepository;
+import com.algaworks.algafoodapi.domain.exception.RestauranteNotFoundException;
 
 /**
  * RestauranteService
@@ -40,7 +42,6 @@ public class RestauranteService {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
-
 
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
@@ -63,9 +64,8 @@ public class RestauranteService {
         return restaurantes.map(r -> restauranteAssembler.toOutputDto(r));
     }
 
-    public Optional<Restaurante> findOrFail(Long id) {
-        Optional<Restaurante> restauranteDB = restauranteRepository.findById(id);
-        return restauranteDB;
+    public Restaurante findOrFail(Long id) {
+        return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNotFoundException(id));
     }
 
     @Transactional
@@ -122,23 +122,21 @@ public class RestauranteService {
 
     @Transactional
     public void active(final Long id) {
-        Restaurante restaurante = restauranteRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Restaurante restaurante = findOrFail(id);
         restaurante.active();
     }
 
     @Transactional
     public void deactive(final Long id) {
-        Restaurante restaurante = restauranteRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Restaurante restaurante = findOrFail(id);
         restaurante.deactive();
     }
 
     @Transactional
     public void removePaymentMethod(Long idRestaurant, Long idPaymentMethod) {
-        Restaurante restaurant = findOrFail(idRestaurant)
+        Restaurante restaurant = findOrFail(idRestaurant);
+        FormaPagamento paymentMethod = formaPagamentoRepository.findById(idPaymentMethod)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        FormaPagamento paymentMethod = formaPagamentoRepository.findById(idPaymentMethod).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         restaurant.getFormasPagamento().remove(paymentMethod);
 
     }

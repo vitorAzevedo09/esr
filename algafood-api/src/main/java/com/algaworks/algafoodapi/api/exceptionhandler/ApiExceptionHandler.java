@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.algaworks.algafoodapi.domain.exception.RestauranteNotFoundException;
+
 /**
  * ApiExceptionHandler
  */
@@ -47,6 +49,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
 
   }
+
+    @ExceptionHandler({ RestauranteNotFoundException.class })
+    public ResponseEntity<Object> handleNoSuchElementException(Exception ex, WebRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        Problema problema = Problema.Builder.newInstance()
+        .title("Elemento não encontrado")
+        .status(status.value())
+        .detail(ex.getMessage())
+        .type("Dados inválidos")
+        .build();
+        
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+    }
 
   @Override
   protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
