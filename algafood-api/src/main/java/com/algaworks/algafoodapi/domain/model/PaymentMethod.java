@@ -7,14 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class FormaPagamento {
+public class PaymentMethod {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
-	private String descricao;
+	private String description;
 
 	public Long getId() {
 		return id;
@@ -25,11 +25,11 @@ public class FormaPagamento {
 	}
 
 	public String getDescricao() {
-		return descricao;
+		return description;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setDescricao(String description) {
+		this.description= description;
 	}
 
 }

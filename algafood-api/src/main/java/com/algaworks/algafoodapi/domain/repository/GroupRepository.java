@@ -1,12 +1,14 @@
+
 package com.algaworks.algafoodapi.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.algaworks.algafoodapi.domain.model.Cozinha;
+import com.algaworks.algafoodapi.domain.model.Group;
 
 /**
- * CozinhaRepository
+ * CidadeRepository
  */
 @Repository
-public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {}
+public interface GroupRepository extends JpaRepository<Group, Long> {
+}

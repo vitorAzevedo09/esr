@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  * Cozinha
  */
 @Entity
-public class Cozinha {
+public class Kitchen {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,32 +25,33 @@ public class Cozinha {
 
     @NotNull
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @OneToMany(mappedBy = "cozinha")
-    private List<Restaurante> restaurantes = new ArrayList<Restaurante>();
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    private List<Restaurant> restaurantes = new ArrayList<Restaurant>();
 
     public Long getId() {
         return id;
     }
 
-    public String getNome() {
-        return nome;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public List<Restaurante> getRestaurantes() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Restaurant> getRestaurantes() {
         return restaurantes;
     }
 
-    public void setRestaurantes(List<Restaurante> restaurantes) {
+    public void setRestaurantes(List<Restaurant> restaurantes) {
         this.restaurantes = restaurantes;
     }
+
 }

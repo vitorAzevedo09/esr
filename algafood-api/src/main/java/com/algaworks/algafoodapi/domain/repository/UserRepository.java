@@ -4,12 +4,12 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.algaworks.algafoodapi.domain.model.Usuario;
+import com.algaworks.algafoodapi.domain.model.User;
 
 /**
  * UsuarioRepository
  */
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<Usuario> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 }

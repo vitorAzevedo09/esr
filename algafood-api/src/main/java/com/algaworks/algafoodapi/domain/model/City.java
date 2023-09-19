@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * Cidade
  */
 @Entity
-public class Cidade {
+public class City {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,34 +23,36 @@ public class Cidade {
   private Long id;
 
   @NotNull
-  private String nome;
+  private String name;
 
   @NotNull
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "estado_id", referencedColumnName = "id")
-  private Estado estado;
+  @JoinColumn(name = "state_id", referencedColumnName = "id")
+  private State state;
 
-  public Long getId() {
-    return id;
-  }
+public Long getId() {
+	return id;
+}
 
-  public String getNome() {
-    return nome;
-  }
+public void setId(Long id) {
+	this.id = id;
+}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+public String getName() {
+	return name;
+}
 
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
+public void setName(String name) {
+	this.name = name;
+}
 
-  public void setEstado(Estado estado) {
-    this.estado = estado;
-  }
+public State getState() {
+	return state;
+}
 
-  public Estado getEstado() {
-    return estado;
-  }
+public void setState(State state) {
+	this.state = state;
+}
+
+
 }
