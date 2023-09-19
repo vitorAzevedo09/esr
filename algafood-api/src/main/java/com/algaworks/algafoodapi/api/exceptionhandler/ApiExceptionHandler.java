@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.algaworks.algafoodapi.domain.exception.RestauranteNotFoundException;
+import com.algaworks.algafoodapi.domain.exception.RestaurantNotFoundException;
 
 /**
  * ApiExceptionHandler
@@ -26,103 +26,103 @@ import com.algaworks.algafoodapi.domain.exception.RestauranteNotFoundException;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler({ Exception.class })
-  public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
+    @ExceptionHandler({ Exception.class })
+    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
 
-    Problema problema = Problema.Builder.newInstance()
-        .title(ex.getMessage())
-        .status(HttpStatus.INTERNAL_SERVER_ERROR.value()).build();
+        Problem problem = Problem.Builder.newInstance()
+                .title(ex.getMessage())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value()).build();
 
-    return handleExceptionInternal(ex, problema, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
-  }
-
-  @ExceptionHandler({ DataIntegrityViolationException.class })
-  public ResponseEntity<Object> handleDataIntegrityViolationException(Exception ex, WebRequest request) {
-    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-
-    Problema problema = Problema.Builder.newInstance()
-        .title("Data integrity violation")
-        .status(status.value())
-        .detail(ex.getMessage())
-        .build();
-
-    return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
-
-  }
-
-    @ExceptionHandler({ RestauranteNotFoundException.class })
-    public ResponseEntity<Object> handleNoSuchElementException(Exception ex, WebRequest request){
-        HttpStatus status = HttpStatus.NOT_FOUND;
-
-        Problema problema = Problema.Builder.newInstance()
-        .title("Elemento não encontrado")
-        .status(status.value())
-        .detail(ex.getMessage())
-        .type("Dados inválidos")
-        .build();
-        
-        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
-  @Override
-  protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-      HttpHeaders headers, HttpStatus status, WebRequest request) {
+    @ExceptionHandler({ DataIntegrityViolationException.class })
+    public ResponseEntity<Object> handleDataIntegrityViolationException(Exception ex, WebRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    Problema problema = Problema.Builder.newInstance()
-        .title("DADOS REQUISITANTES INVÀLIDOS")
-        .detail(status.getReasonPhrase())
-        .status(status.value()).build();
+        Problem problem = Problem.Builder.newInstance()
+                .title("Data integrity violation")
+                .status(status.value())
+                .detail(ex.getMessage())
+                .build();
 
-    return new ResponseEntity<Object>(problema, new HttpHeaders(), HttpStatus.BAD_REQUEST);
-  }
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<Object> handleConstraintViolationException(
-      ConstraintViolationException constraintViolationException) {
+    }
 
-    HttpStatus status = HttpStatus.BAD_REQUEST;
+    @ExceptionHandler({ RestaurantNotFoundException.class })
+    public ResponseEntity<Object> handleNoSuchElementException(Exception ex, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
 
-    Set<ConstraintViolation<?>> violations = constraintViolationException.getConstraintViolations();
+        Problem problem = Problem.Builder.newInstance()
+                .title("Elemento não encontrado")
+                .status(status.value())
+                .detail(ex.getMessage())
+                .type("Dados inválidos")
+                .build();
 
-    String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente";
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
 
-    List<Problema.Field> problemaFields = violations.stream().map(violation -> Problema.Field.Builder.newInstance()
-        .name(violation.getPropertyPath().toString())
-        .userMessage(violation.getMessage())
-        .build()).toList();
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-    Problema problema = Problema.Builder.newInstance()
-        .title("Error no request")
-        .status(status.value())
-        .type("DADOS INVÀLIDOS")
-        .detail(detail)
-        .fields(problemaFields)
-        .build();
+        Problem problem = Problem.Builder.newInstance()
+                .title("DADOS REQUISITANTES INVÀLIDOS")
+                .detail(status.getReasonPhrase())
+                .status(status.value()).build();
 
-    return new ResponseEntity<>(problema, status);
-  }
+        return new ResponseEntity<Object>(problem, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 
-  @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-      HttpHeaders headers, HttpStatus status, WebRequest request) {
-    String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente";
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(
+            ConstraintViolationException constraintViolationException) {
 
-    BindingResult bindingResults = ex.getBindingResult();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
 
-    List<Problema.Field> problemaFields = bindingResults.getFieldErrors().stream()
-        .map(fieldErr -> Problema.Field.Builder.newInstance()
-            .name(fieldErr.getField())
-            .userMessage(fieldErr.getDefaultMessage()).build())
-        .toList();
+        Set<ConstraintViolation<?>> violations = constraintViolationException.getConstraintViolations();
 
-    Problema problema = Problema.Builder.newInstance()
-        .status(status.value())
-        .type("DADOS INVÀLIDOS")
-        .detail(detail)
-        .fields(problemaFields)
-        .build();
+        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente";
 
-    return new ResponseEntity<Object>(problema, new HttpHeaders(), HttpStatus.BAD_REQUEST);
-  }
+        List<Problem.Field> problemFields = violations.stream().map(violation -> Problem.Field.Builder.newInstance()
+                .name(violation.getPropertyPath().toString())
+                .userMessage(violation.getMessage())
+                .build()).toList();
+
+        Problem problem = Problem.Builder.newInstance()
+                .title("Error no request")
+                .status(status.value())
+                .type("DADOS INVÀLIDOS")
+                .detail(detail)
+                .fields(problemFields)
+                .build();
+
+        return new ResponseEntity<>(problem, status);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente";
+
+        BindingResult bindingResults = ex.getBindingResult();
+
+        List<Problem.Field> problemFields = bindingResults.getFieldErrors().stream()
+                .map(fieldErr -> Problem.Field.Builder.newInstance()
+                        .name(fieldErr.getField())
+                        .userMessage(fieldErr.getDefaultMessage()).build())
+                .toList();
+
+        Problem problem = Problem.Builder.newInstance()
+                .status(status.value())
+                .type("DADOS INVÀLIDOS")
+                .detail(detail)
+                .fields(problemFields)
+                .build();
+
+        return new ResponseEntity<Object>(problem, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Problema
  */
-public record Problema(Integer status, String type, String title, String detail, List<Field> fields) {
+public record Problem(Integer status, String type, String title, String detail, List<Field> fields) {
 
   public static class Field {
     private String name;
@@ -90,8 +90,8 @@ public record Problema(Integer status, String type, String title, String detail,
       return this;
     }
 
-    public Problema build() {
-      return new Problema(status, type, title, detail, fields);
+    public Problem build() {
+      return new Problem(status, type, title, detail, fields);
     }
   }
 }
