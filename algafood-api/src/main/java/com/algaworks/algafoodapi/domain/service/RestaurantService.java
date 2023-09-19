@@ -1,0 +1,102 @@
+package com.algaworks.algafoodapi.domain.service;
+
+import static com.algaworks.algafoodapi.infrastructure.repository.RestaurantSpecs.withFreeShipping;
+import static com.algaworks.algafoodapi.infrastructure.repository.RestaurantSpecs.withSimilarNames;
+
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.algaworks.algafoodapi.domain.model.PaymentMethod;
+import com.algaworks.algafoodapi.domain.model.Restaurant;
+import com.algaworks.algafoodapi.domain.repository.RestaurantRepository;
+import com.algaworks.algafoodapi.domain.exception.RestaurantNotFoundException;
+
+/**
+ * RestauranteService
+ */
+@Service
+public class RestaurantService {
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private PaymentMethodService paymentMethodService;
+
+    public Page<Restaurant> findAll(Pageable page) {
+        return restaurantRepository.findAll(page);
+    }
+
+    public Page<Restaurant> findByName(String name) {
+        return restaurantRepository.findByName(name);
+    }
+
+    public Page<Restaurant> findByNameAndFreeShipping(Pageable page, String name) {
+        return restaurantRepository.findAll(withFreeShipping().and(withSimilarNames(name)), page);
+    }
+
+    public Restaurant findOrFail(Long id) {
+        return restaurantRepository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
+    }
+
+    @Transactional
+    public Restaurant create(Restaurant inputRestaurant) {
+        return restaurantRepository.save(inputRestaurant);
+    }
+
+    @Transactional
+    public Restaurant update(final Long id, Restaurant inputRestaurant) {
+        if (!restaurantRepository.existsById(id)) {
+            throw new RestaurantNotFoundException(id);
+        }
+        inputRestaurant.setId(id);
+        return restaurantRepository.saveAndFlush(inputRestaurant);
+    }
+
+    @Transactional
+    public Restaurant partialUpdate(Long id, Map<String, Object> fields) {
+        Restaurant restaurant = findOrFail(id);
+        restaurant.setFromMap(fields);
+        return restaurantRepository.save(restaurant);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        if (!restaurantRepository.existsById(id)) {
+            throw new RestaurantNotFoundException(id);
+        }
+        restaurantRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void active(final Long id) {
+        Restaurant restaurant = findOrFail(id);
+        restaurant.active();
+    }
+
+    @Transactional
+    public void deactive(final Long id) {
+        Restaurant restaurant = findOrFail(id);
+        restaurant.deactive();
+    }
+
+    @Transactional
+    public void removePaymentMethod(Long idRestaurant, Long idPaymentMethod) {
+        Restaurant restaurant = findOrFail(idRestaurant);
+        PaymentMethod paymentMethod = paymentMethodService.findOrFail(idPaymentMethod);
+        restaurant.getPaymentMethods().remove(paymentMethod);
+    }
+
+    @Transactional
+    public void addPaymentMethod(Long idRestaurant, Long idPaymentMethod) {
+        Restaurant restaurant = findOrFail(idRestaurant);
+        PaymentMethod paymentMethod = paymentMethodService.findOrFail(idPaymentMethod);
+        restaurant.getPaymentMethods().remove(paymentMethod);
+    }
+}

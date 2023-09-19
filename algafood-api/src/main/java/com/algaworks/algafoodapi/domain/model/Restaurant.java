@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import java.lang.reflect.Field;
+import org.springframework.util.ReflectionUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -139,6 +143,26 @@ public class Restaurant {
 
     public void setProdutos(List<Product> produtos) {
         this.produtos = produtos;
+    }
+
+    public void active() {
+        this.active = true;
+    }
+
+    public void deactive() {
+        this.active = false;
+    }
+
+    public void setFromMap(Map<String, Object> fields) {
+        fields.forEach((k, v) -> {
+            Field field = ReflectionUtils.findField(Restaurant.class, k);
+            field.setAccessible(true);
+            if (v instanceof Double) {
+                ReflectionUtils.setField(field, this, BigDecimal.valueOf((Double) v));
+            } else {
+                ReflectionUtils.setField(field, this, v);
+            }
+        });
     }
 
 }
