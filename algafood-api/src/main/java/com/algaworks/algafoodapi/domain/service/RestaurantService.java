@@ -46,17 +46,17 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Restaurant create(Restaurant inputRestaurant) {
-        return restaurantRepository.save(inputRestaurant);
+    public Restaurant create(Restaurant restaurantInput) {
+        return restaurantRepository.save(restaurantInput);
     }
 
     @Transactional
-    public Restaurant update(final Long id, Restaurant inputRestaurant) {
+    public Restaurant update(final Long id, Restaurant restaurantInput) {
         if (!restaurantRepository.existsById(id)) {
             throw new RestaurantNotFoundException(id);
         }
-        inputRestaurant.setId(id);
-        return restaurantRepository.saveAndFlush(inputRestaurant);
+        restaurantInput.setId(id);
+        return restaurantRepository.saveAndFlush(restaurantInput);
     }
 
     @Transactional

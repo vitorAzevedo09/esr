@@ -45,7 +45,7 @@ public class CityService {
     }
 
     @Transactional
-    public void deletar(final Long id) {
+    public void delete(final Long id) {
         if (cityRepository.existsById(id)) {
             cityRepository.deleteById(id);
         }

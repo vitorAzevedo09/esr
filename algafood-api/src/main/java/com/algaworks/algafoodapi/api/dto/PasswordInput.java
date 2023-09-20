@@ -6,6 +6,6 @@ import javax.validation.constraints.NotBlank;
  * PasswordInput
  */
 public record PasswordInput(
-    @NotBlank String senhaAtual,
-    @NotBlank String novaSenha) {
+    @NotBlank String actualPassword,
+    @NotBlank String newPassword) {
 }

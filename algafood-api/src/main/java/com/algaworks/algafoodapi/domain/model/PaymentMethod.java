@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * 
+ */
 @Entity
 public class PaymentMethod {
 
@@ -24,12 +27,13 @@ public class PaymentMethod {
 		this.id = id;
 	}
 
-	public String getDescricao() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescricao(String description) {
-		this.description= description;
+	public void setDescription(String description) {
+		this.description = description;
 	}
+
 
 }

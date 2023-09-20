@@ -47,7 +47,7 @@ public class KitchenService {
     }
 
     @Transactional
-    public void deletar(Long id) {
+    public void delete(Long id) {
         Kitchen kitchen = findOrFail(id);
         restaurantRepository.deleteAll(kitchen.getRestaurantes());
         kitchenRepository.delete(kitchen);
