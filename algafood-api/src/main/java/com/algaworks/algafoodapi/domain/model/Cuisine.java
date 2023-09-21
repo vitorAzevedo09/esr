@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  * Cozinha
  */
 @Entity
-public class Kitchen {
+public class Cuisine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Kitchen {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "kitchen")
+    @OneToMany(mappedBy = "cuisine")
     private List<Restaurant> restaurants = new ArrayList<Restaurant>();
 
     public Long getId() {

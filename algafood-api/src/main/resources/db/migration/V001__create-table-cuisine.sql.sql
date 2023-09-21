@@ -1,5 +1,5 @@
-create table cozinha (
+create table kitchen (
   id bigint not null auto_increment,
-  nome varchar(255) not null,
+  name varchar(255) not null,
   primary key (id)
 ) engine=InnoDB;

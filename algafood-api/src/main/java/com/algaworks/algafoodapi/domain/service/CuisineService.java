@@ -7,48 +7,48 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.algaworks.algafoodapi.domain.exception.KitchenNotFoundException;
-import com.algaworks.algafoodapi.domain.model.Kitchen;
-import com.algaworks.algafoodapi.domain.repository.KitchenRepository;
+import com.algaworks.algafoodapi.domain.exception.CuisineNotFoundException;
+import com.algaworks.algafoodapi.domain.model.Cuisine;
+import com.algaworks.algafoodapi.domain.repository.CuisineRepository;
 import com.algaworks.algafoodapi.domain.repository.RestaurantRepository;
 
 /**
  * CozinhaService
  */
 @Service
-public class KitchenService {
+public class CuisineService {
 
     @Autowired
-    private KitchenRepository kitchenRepository;
+    private CuisineRepository kitchenRepository;
 
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-    public Page<Kitchen> findAll(Pageable page) {
+    public Page<Cuisine> findAll(Pageable page) {
         return kitchenRepository.findAll(page);
     }
 
-    public Kitchen findOrFail(Long id) {
+    public Cuisine findOrFail(Long id) {
         return kitchenRepository.findById(id)
-                .orElseThrow(() -> new KitchenNotFoundException(id));
+                .orElseThrow(() -> new CuisineNotFoundException(id));
     }
 
     @Transactional
-    public Kitchen create(Kitchen inputKitchen) {
-        return kitchenRepository.save(inputKitchen);
+    public Cuisine create(Cuisine inputCuisine) {
+        return kitchenRepository.save(inputCuisine);
     }
 
     @Transactional
-    public Kitchen update(final Long id, Kitchen inputKitchen) {
+    public Cuisine update(final Long id, Cuisine inputCuisine) {
         if (kitchenRepository.existsById(id)) {
-            return kitchenRepository.save(inputKitchen);
+            return kitchenRepository.save(inputCuisine);
         }
-        throw new KitchenNotFoundException(id);
+        throw new CuisineNotFoundException(id);
     }
 
     @Transactional
     public void delete(Long id) {
-        Kitchen kitchen = findOrFail(id);
+        Cuisine kitchen = findOrFail(id);
         restaurantRepository.deleteAll(kitchen.getRestaurants());
         kitchenRepository.delete(kitchen);
     }

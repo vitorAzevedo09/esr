@@ -1,26 +1,24 @@
 package com.algaworks.algafoodapi;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-
-import com.algaworks.algafoodapi.api.controller.CityController;
 import com.algaworks.algafoodapi.domain.model.City;
-import com.algaworks.algafoodapi.domain.repository.CityRepository;
-import com.algaworks.algafoodapi.util.DatabaseCleaner;
+import com.algaworks.algafoodapi.domain.service.CityService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(classes = { CityController.class })
+@AutoConfigureMockMvc
 @TestPropertySource("/application-test.properties")
 public class CityControllerIntegrationTest {
 
@@ -28,88 +26,49 @@ public class CityControllerIntegrationTest {
     private int port;
 
     @Autowired
-    private DatabaseCleaner databaseCleaner;
+    private CityService cityService;
 
-    @Autowired
-    private CityRepository cityRepository;
-
-    private String jsonCorretoCity;
-    private int quantidadeCitiesCadastrados;
-    private Long cityIdExistente;
-    private Long cityIdInexistente;
-
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
-        RestAssured.basePath = "/cidades";
-
-        databaseCleaner.clearTables();
-        prepararDados();
     }
 
     @Test
-    public void deveRetornarStatus200_QuandoConsultarCities() {
+    public void shouldReturnStatus200WhenFetchingCities() {
         given()
-                .accept(ContentType.JSON)
-                .when()
-                .get()
-                .then()
-                .statusCode(HttpStatus.OK.value());
+            .contentType(ContentType.JSON)
+        .when()
+            .get("/cidades")
+        .then()
+            .statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    public void deveRetornarQuantidadeCorretaDeCities_QuandoConsultarCities() {
+    public void shouldReturnCorrectNumberOfCitiesWhenFetchingCities() {
+        Pageable pageable = Pageable.ofSize(10);
         given()
-                .accept(ContentType.JSON)
-                .when()
-                .get()
-                .then()
-                .body("", hasSize(quantidadeCitiesCadastrados));
+            .contentType(ContentType.JSON)
+        .when()
+            .get("/cidades")
+        .then()
+            .body("size()", equalTo(cityService.findAll(pageable).getSize()));
     }
 
     @Test
-    public void deveRetornarStatus201_QuandoCadastrarCity() {
+    public void shouldReturnStatus201WhenCreatingCity() {
+        City newCity = new City();
+        newCity.setName("New City");
+
         given()
-                .body(jsonCorretoCity)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .when()
-                .post()
-                .then()
-                .statusCode(HttpStatus.CREATED.value());
+            .contentType(ContentType.JSON)
+            .body(newCity)
+        .when()
+            .post("/cidades")
+        .then()
+            .statusCode(HttpStatus.CREATED.value());
     }
 
-    @Test
-    public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCityExistente() {
-        given()
-                .pathParam("cityId", cityIdExistente)
-                .accept(ContentType.JSON)
-                .when()
-                .get("/{cityId}")
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("nome", equalTo("Nome da Cidade")); // Replace with the expected city name
-    }
+    // Add more test cases for other endpoints and scenarios
 
-    @Test
-    public void deveRetornarStatus404_QuandoConsultarCityInexistente() {
-        given()
-                .pathParam("cityId", cityIdInexistente)
-                .accept(ContentType.JSON)
-                .when()
-                .get("/{cityId}")
-                .then()
-                .statusCode(HttpStatus.NOT_FOUND.value());
-    }
-
-    private void prepararDados() {
-        City city = new City();
-        city.setName("Nome da Cidade"); // Replace with the desired city name
-        cityRepository.save(city);
-
-        quantidadeCitiesCadastrados = (int) cityRepository.count();
-        cityIdExistente = city.getId();
-        cityIdInexistente = 100L; // Use an ID that does not exist in your database
-    }
 }

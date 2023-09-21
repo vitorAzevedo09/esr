@@ -45,7 +45,7 @@ public class Restaurant {
 
     @ManyToOne
     @JoinColumn(name = "kitchen_id", nullable = false)
-    private Kitchen kitchen;
+    private Cuisine kitchen;
 
     @Embedded
     private Address address;
@@ -119,11 +119,11 @@ public class Restaurant {
 		this.active = active;
 	}
 
-	public Kitchen getKitchen() {
+	public Cuisine getCuisine() {
 		return kitchen;
 	}
 
-	public void setKitchen(Kitchen kitchen) {
+	public void setCuisine(Cuisine kitchen) {
 		this.kitchen = kitchen;
 	}
 

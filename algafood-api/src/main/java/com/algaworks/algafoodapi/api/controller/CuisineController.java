@@ -16,58 +16,58 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafoodapi.api.assembler.KitchenAssembler;
-import com.algaworks.algafoodapi.api.dto.KitchenInput;
-import com.algaworks.algafoodapi.api.dto.KitchenOutput;
-import com.algaworks.algafoodapi.domain.model.Kitchen;
-import com.algaworks.algafoodapi.domain.service.KitchenService;
+import com.algaworks.algafoodapi.api.assembler.CuisineAssembler;
+import com.algaworks.algafoodapi.api.dto.CuisineInput;
+import com.algaworks.algafoodapi.api.dto.CuisineOutput;
+import com.algaworks.algafoodapi.domain.model.Cuisine;
+import com.algaworks.algafoodapi.domain.service.CuisineService;
 
 /**
  * CozinhaController
  */
 @RestController
 @RequestMapping("/cozinhas")
-public class KitchenController {
+public class CuisineController {
 
     @Autowired
-    private KitchenService kitchenService;
+    private CuisineService cuisineService;
 
     @Autowired
-    private KitchenAssembler kitchenAssembler;
+    private CuisineAssembler cuisineAssembler;
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public Page<KitchenOutput> getAll(Pageable page) {
-        return kitchenService.findAll(page)
-                .map((k) -> kitchenAssembler.toOutput(k));
+    public Page<CuisineOutput> getAll(Pageable page) {
+        return cuisineService.findAll(page)
+                .map((k) -> cuisineAssembler.toOutput(k));
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public KitchenOutput getOne(@PathVariable Long id) {
-        Kitchen kitchen = kitchenService.findOrFail(id);
-        return kitchenAssembler.toOutput(kitchen);
+    public CuisineOutput getOne(@PathVariable Long id) {
+        Cuisine cuisine = cuisineService.findOrFail(id);
+        return cuisineAssembler.toOutput(cuisine);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public KitchenOutput create(@Valid @RequestBody KitchenInput kitchenInput) {
-        Kitchen kitchen = kitchenAssembler.toEntity(kitchenInput);
-        kitchen = kitchenService.create(kitchen);
-        return kitchenAssembler.toOutput(kitchen);
+    public CuisineOutput create(@Valid @RequestBody CuisineInput cuisineInput) {
+        Cuisine cuisine = cuisineAssembler.toEntity(cuisineInput);
+        cuisine = cuisineService.create(cuisine);
+        return cuisineAssembler.toOutput(cuisine);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public KitchenOutput update(@PathVariable Long id, @Valid @RequestBody KitchenInput kitchenInput) {
-        Kitchen kitchen = kitchenAssembler.toEntity(kitchenInput);
-        kitchen = kitchenService.update(id, kitchen);
-        return kitchenAssembler.toOutput(kitchen);
+    public CuisineOutput update(@PathVariable Long id, @Valid @RequestBody CuisineInput cuisineInput) {
+        Cuisine cuisine = cuisineAssembler.toEntity(cuisineInput);
+        cuisine = cuisineService.update(id, cuisine);
+        return cuisineAssembler.toOutput(cuisine);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        kitchenService.delete(id);
+        cuisineService.delete(id);
     }
 }
