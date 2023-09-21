@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 /**
  * 
  */
-@Entity
+@Entity(name = "group_user")
 public class Group {
 
     @Id

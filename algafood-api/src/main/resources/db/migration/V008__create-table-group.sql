@@ -1,4 +1,4 @@
-CREATE TABLE group (
+CREATE TABLE group_user (
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(60) NOT NULL,
     PRIMARY KEY (id)

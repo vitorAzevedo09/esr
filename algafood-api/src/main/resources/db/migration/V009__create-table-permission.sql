@@ -15,4 +15,4 @@ ALTER TABLE group_permission ADD CONSTRAINT fk_group_permission_permission
 FOREIGN KEY (permission_id) REFERENCES permission (id);
 
 ALTER TABLE group_permission ADD CONSTRAINT fk_group_permission_group
-FOREIGN KEY (group_id) REFERENCES group (id);
+FOREIGN KEY (group_id) REFERENCES group_user (id);

@@ -1,23 +1,23 @@
-create table usuario (
+create table user(
 	id bigint not null auto_increment,
-	nome varchar(80) not null,
+	name varchar(80) not null,
 	email varchar(255) not null,
-	senha varchar(255) not null,
-	data_cadastro datetime not null,
+	password varchar(255) not null,
+	register_at datetime not null,
 	
 	primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table usuario_grupo (
-	usuario_id bigint not null,
-	grupo_id bigint not null,
+create table user_group(
+	user_id bigint not null,
+	group_id bigint not null,
 	
-	primary key (usuario_id, grupo_id)
+	primary key (user_id, group_id)
 ) engine=InnoDB default charset=utf8;
 
 
-alter table usuario_grupo add constraint fk_usuario_grupo_grupo
-foreign key (grupo_id) references grupo (id);
+alter table user_group add constraint fk_user_group_group
+foreign key (group_id) references group_user (id);
 
-alter table usuario_grupo add constraint fk_usuario_grupo_usuario
-foreign key (usuario_id) references usuario (id);
+alter table user_group add constraint fk_user_group_user
+foreign key (user_id) references user (id);
