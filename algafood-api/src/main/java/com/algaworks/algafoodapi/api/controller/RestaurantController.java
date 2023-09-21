@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.api.controller;
 
 import java.util.Map;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -48,9 +49,9 @@ public class RestaurantController {
 
     @GetMapping("/por-nome")
     @ResponseStatus(code = HttpStatus.OK)
-    public Page<RestaurantOutput> findByName(@RequestParam(value = "name") String name) {
-        return restaurantService.findByName(name)
-                .map((r) -> restaurantAssembler.toOutput(r));
+    public List<RestaurantOutput> findByName(@RequestParam(value = "name") String name) {
+        return restaurantService.findByName(name).stream()
+                .map((r) -> restaurantAssembler.toOutput(r)).toList();
     }
 
     @GetMapping("/por-nome/frete-gratis")

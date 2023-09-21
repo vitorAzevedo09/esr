@@ -8,5 +8,5 @@ import java.math.BigDecimal;
 public record RestaurantInput(
         String name,
         BigDecimal shipping_fee,
-        KitchenOnlyIdInput kitchen) {
+        KitchenOnlyIdOutput kitchen) {
 }

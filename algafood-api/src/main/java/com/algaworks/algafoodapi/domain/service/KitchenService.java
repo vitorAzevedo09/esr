@@ -49,7 +49,7 @@ public class KitchenService {
     @Transactional
     public void delete(Long id) {
         Kitchen kitchen = findOrFail(id);
-        restaurantRepository.deleteAll(kitchen.getRestaurantes());
+        restaurantRepository.deleteAll(kitchen.getRestaurants());
         kitchenRepository.delete(kitchen);
     }
 

@@ -27,8 +27,8 @@ public class Kitchen {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "cozinha")
-    private List<Restaurant> restaurantes = new ArrayList<Restaurant>();
+    @OneToMany(mappedBy = "kitchen")
+    private List<Restaurant> restaurants = new ArrayList<Restaurant>();
 
     public Long getId() {
         return id;
@@ -46,12 +46,12 @@ public class Kitchen {
         this.name = name;
     }
 
-    public List<Restaurant> getRestaurantes() {
-        return restaurantes;
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
     }
 
-    public void setRestaurantes(List<Restaurant> restaurantes) {
-        this.restaurantes = restaurantes;
+    public void setRestaurantes(List<Restaurant> restaurants) {
+        this.restaurants = restaurants;
     }
 
 }

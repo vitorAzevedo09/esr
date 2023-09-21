@@ -26,7 +26,7 @@ public class State {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "estado")
+    @OneToMany(mappedBy = "state")
     private List<City> cities = new ArrayList<City>();
 
     public Long getId() {

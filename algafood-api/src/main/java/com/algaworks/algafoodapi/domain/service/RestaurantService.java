@@ -4,6 +4,7 @@ import static com.algaworks.algafoodapi.infrastructure.repository.RestaurantSpec
 import static com.algaworks.algafoodapi.infrastructure.repository.RestaurantSpecs.withSimilarNames;
 
 import java.util.Map;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -33,7 +34,7 @@ public class RestaurantService {
         return restaurantRepository.findAll(page);
     }
 
-    public Page<Restaurant> findByName(String name) {
+    public List<Restaurant> findByName(String name) {
         return restaurantRepository.findByName(name);
     }
 
