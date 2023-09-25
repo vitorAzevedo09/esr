@@ -19,12 +19,13 @@ import com.algaworks.algafoodapi.domain.model.Cuisine;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
 
 import java.util.Collections;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class CuisineControllerIntegrationTest {
+public class CuisineControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,6 +47,9 @@ public class CuisineControllerIntegrationTest {
 
         when(cuisineService.update(anyLong(), any(Cuisine.class)))
                 .thenReturn(createCuisine());
+        doNothing()
+            .when(cuisineService)
+            .delete(anyLong());
     }
 
     @Test

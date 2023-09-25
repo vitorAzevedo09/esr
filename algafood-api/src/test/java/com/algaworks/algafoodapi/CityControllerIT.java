@@ -23,12 +23,13 @@ import java.util.Collections;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CityControllerIntegrationTest {
+public class CityControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,6 +48,7 @@ public class CityControllerIntegrationTest {
                 .thenReturn(createCity());
         when(cityService.update(anyLong(), any(City.class)))
                 .thenReturn(createCity());
+        doNothing().when(cityService).delete(anyLong());
     }
 
     @Test
@@ -83,7 +85,13 @@ public class CityControllerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("CityName"));
     }
 
-    // Add more test cases for other controller methods and edge cases as needed
+    @Test
+    public void testDeleteCity() throws Exception {
+        Long cityIdToDelete = 1L;
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cities/{id}", cityIdToDelete))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 
     private City createCity() {
         City city = new City();

@@ -76,11 +76,13 @@ public class Restaurant {
     public void setFromMap(Map<String, Object> fields) {
         fields.forEach((k, v) -> {
             Field field = ReflectionUtils.findField(Restaurant.class, k);
+            if(!(field == null)){
             field.setAccessible(true);
             if (v instanceof Double) {
                 ReflectionUtils.setField(field, this, BigDecimal.valueOf((Double) v));
             } else {
                 ReflectionUtils.setField(field, this, v);
+            }
             }
         });
     }
