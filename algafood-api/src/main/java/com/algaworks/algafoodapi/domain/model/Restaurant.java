@@ -37,10 +37,10 @@ public class Restaurant {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "shipping_fee", nullable = false)
-    private BigDecimal shippingFee;
+    @Column(name = "delivery_fee", nullable = false)
+    private BigDecimal deliveryFee;
 
-    @Column(name = "ativo", nullable = false)
+    @Column(name = "active", nullable = false)
     private Boolean active = Boolean.TRUE;
 
     @ManyToOne
@@ -52,11 +52,11 @@ public class Restaurant {
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime registrationDate;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime updateDate;
+    private LocalDateTime updatedAt;
 
     @ManyToMany
     @JoinTable(name = "restaurant_payment_method", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
@@ -64,8 +64,6 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant")
     private List<Product> products = new ArrayList<>();
-
-
 
     public void active() {
         this.active = true;
@@ -87,85 +85,84 @@ public class Restaurant {
         });
     }
 
-	public Long getId() {
-		return id;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Cuisine getCuisine() {
+        return cuisine;
+    }
+
+    public void setCuisine(Cuisine cuisine) {
+        this.cuisine = cuisine;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<PaymentMethod> getPaymentMethods() {
+        return paymentMethods;
+    }
+
+    public void setPaymentMethods(List<PaymentMethod> paymentMethods) {
+        this.paymentMethods = paymentMethods;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+	public BigDecimal getDeliveryFee() {
+		return deliveryFee;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setDeliveryFee(BigDecimal deliveryFee) {
+		this.deliveryFee = deliveryFee;
 	}
 
-	public String getName() {
-		return name;
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
-
-	public BigDecimal getShippingFee() {
-		return shippingFee;
-	}
-
-	public void setShippingFee(BigDecimal shippingFee) {
-		this.shippingFee = shippingFee;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
-	public Cuisine getCuisine() {
-		return cuisine;
-	}
-
-	public void setCuisine(Cuisine cuisine) {
-		this.cuisine = cuisine;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
-	public LocalDateTime getRegistrationDate() {
-		return registrationDate;
-	}
-
-	public void setRegistrationDate(LocalDateTime registrationDate) {
-		this.registrationDate = registrationDate;
-	}
-
-	public LocalDateTime getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(LocalDateTime updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public List<PaymentMethod> getPaymentMethods() {
-		return paymentMethods;
-	}
-
-	public void setPaymentMethods(List<PaymentMethod> paymentMethods) {
-		this.paymentMethods = paymentMethods;
-	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
 
 }

@@ -39,8 +39,8 @@ public class CuisineController {
     @ResponseStatus(code = HttpStatus.OK)
     public Page<CuisineOutput> getAll(Pageable page) {
         return cuisineService.findAll(page)
-                .map((k) -> cuisineAssembler.toOutput(k));
-    }
+                .map((c) -> cuisineAssembler.toOutput(c));
+}
 
     @GetMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)

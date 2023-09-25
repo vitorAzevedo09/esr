@@ -2,73 +2,94 @@ package com.algaworks.algafoodapi;
 
 import com.algaworks.algafoodapi.domain.model.City;
 import com.algaworks.algafoodapi.domain.service.CityService;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import java.util.Collections;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
+
 @AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
 public class CityControllerIntegrationTest {
 
-    @LocalServerPort
-    private int port;
-
     @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private CityService cityService;
 
     @BeforeEach
     public void setUp() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-        RestAssured.port = port;
+        // Mock the behavior of your CityService methods
+        when(cityService.findAll(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(Collections.singletonList(createCity())));
+        when(cityService.findOrFail(anyLong()))
+                .thenReturn(createCity());
+        when(cityService.create(any(City.class)))
+                .thenReturn(createCity());
+        when(cityService.update(anyLong(), any(City.class)))
+                .thenReturn(createCity());
     }
 
     @Test
-    public void shouldReturnStatus200WhenFetchingCities() {
-        given()
-            .contentType(ContentType.JSON)
-        .when()
-            .get("/cidades")
-        .then()
-            .statusCode(HttpStatus.OK.value());
+    public void testGetAllCities() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/cidades")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("CityName"));
     }
 
     @Test
-    public void shouldReturnCorrectNumberOfCitiesWhenFetchingCities() {
-        Pageable pageable = Pageable.ofSize(10);
-        given()
-            .contentType(ContentType.JSON)
-        .when()
-            .get("/cidades")
-        .then()
-            .body("size()", equalTo(cityService.findAll(pageable).getSize()));
+    public void testGetCityById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/cidades/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("CityName"));
     }
 
     @Test
-    public void shouldReturnStatus201WhenCreatingCity() {
-        City newCity = new City();
-        newCity.setName("New City");
-
-        given()
-            .contentType(ContentType.JSON)
-            .body(newCity)
-        .when()
-            .post("/cidades")
-        .then()
-            .statusCode(HttpStatus.CREATED.value());
+    public void testCreateCity() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/cidades")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"CityName\"}"))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("CityName"));
     }
 
-    // Add more test cases for other endpoints and scenarios
+    @Test
+    public void testUpdateCity() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/cidades/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"CityName\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("CityName"));
+    }
 
+    // Add more test cases for other controller methods and edge cases as needed
+
+    private City createCity() {
+        City city = new City();
+        city.setId(1L);
+        city.setName("CityName");
+        // Set other properties as needed
+        return city;
+    }
 }

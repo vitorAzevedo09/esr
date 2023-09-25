@@ -30,6 +30,13 @@ public class Cuisine {
     @OneToMany(mappedBy = "cuisine")
     private List<Restaurant> restaurants = new ArrayList<Restaurant>();
 
+    public Cuisine(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Cuisine(){}
+
     public Long getId() {
         return id;
     }

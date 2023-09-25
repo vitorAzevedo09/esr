@@ -15,7 +15,7 @@ public class RestaurantAssembler {
     public RestaurantOutput toOutput(Restaurant restaurant) {
         RestaurantOutput restaurantOutput = new RestaurantOutput(restaurant.getId(),
                 restaurant.getName(),
-                restaurant.getShippingFee(),
+                restaurant.getDeliveryFee(),
                 restaurant.getActive());
         return restaurantOutput;
     }
@@ -27,7 +27,7 @@ public class RestaurantAssembler {
     public Restaurant toEntity(RestaurantInput restaurantInput) {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(restaurantInput.name());
-        restaurant.setShippingFee(restaurantInput.shipping_fee());
+        restaurant.setDeliveryFee(restaurantInput.shipping_fee());
         if (restaurant.getActive()) {
             restaurant.active();
         } else {

@@ -100,4 +100,5 @@ public class RestaurantService {
         PaymentMethod paymentMethod = paymentMethodService.findOrFail(idPaymentMethod);
         restaurant.getPaymentMethods().remove(paymentMethod);
     }
+
 }

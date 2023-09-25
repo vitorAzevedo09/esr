@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.algaworks.algafoodapi.domain.exception.CuisineNotFoundException;
 import com.algaworks.algafoodapi.domain.model.Cuisine;
+import com.algaworks.algafoodapi.domain.model.Restaurant;
 import com.algaworks.algafoodapi.domain.repository.CuisineRepository;
 import com.algaworks.algafoodapi.domain.repository.RestaurantRepository;
 
@@ -23,6 +24,9 @@ public class CuisineService {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private ProductService productService;
 
     public Page<Cuisine> findAll(Pageable page) {
         return kitchenRepository.findAll(page);
@@ -41,6 +45,7 @@ public class CuisineService {
     @Transactional
     public Cuisine update(final Long id, Cuisine inputCuisine) {
         if (kitchenRepository.existsById(id)) {
+            inputCuisine.setId(id);
             return kitchenRepository.save(inputCuisine);
         }
         throw new CuisineNotFoundException(id);
@@ -48,9 +53,12 @@ public class CuisineService {
 
     @Transactional
     public void delete(Long id) {
-        Cuisine kitchen = findOrFail(id);
-        restaurantRepository.deleteAll(kitchen.getRestaurants());
-        kitchenRepository.delete(kitchen);
+        Cuisine cuisine = findOrFail(id);
+        for (Restaurant restaurant: cuisine.getRestaurants()) {
+            productService.deleteAllByRestaurant(restaurant);
+        }
+        restaurantRepository.deleteAll(cuisine.getRestaurants());
+        kitchenRepository.delete(cuisine);
     }
 
 }

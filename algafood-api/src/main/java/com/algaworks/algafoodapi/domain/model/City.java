@@ -16,43 +16,49 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class City {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Valid
-  @NotNull
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Valid
+    @NotNull
+    private Long id;
 
-  @NotNull
-  private String name;
+    @NotNull
+    private String name;
 
-  @NotNull
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "state_id", referencedColumnName = "id")
-  private State state;
+    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "state_id", referencedColumnName = "id")
+    private State state;
 
-public Long getId() {
-	return id;
-}
+    public City(Long id, String name){
+        this.id = id;
+        this.name = name;
+    }
 
-public void setId(Long id) {
-	this.id = id;
-}
+    public City(){}
 
-public String getName() {
-	return name;
-}
+    public Long getId() {
+        return id;
+    }
 
-public void setName(String name) {
-	this.name = name;
-}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-public State getState() {
-	return state;
-}
+    public String getName() {
+        return name;
+    }
 
-public void setState(State state) {
-	this.state = state;
-}
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
 
 }
