@@ -18,6 +18,7 @@ import com.algaworks.algafoodapi.domain.model.Group;
 import com.algaworks.algafoodapi.domain.service.GroupService;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
@@ -36,7 +37,10 @@ public class GroupControllerIT {
     @BeforeEach
     void setUp(){
         when(groupService.findAll(any(Pageable.class)))
-    .thenReturn(new PageImpl<>(Collections.singletonList(createGroup())));
+        .thenReturn(new PageImpl<>(Collections.singletonList(createGroup())));
+
+        when(groupService.findOrFail(anyLong()))
+        .thenReturn(createGroup());
     }
 
     @Test
@@ -50,7 +54,10 @@ public class GroupControllerIT {
 
     @Test
     public void testGetOne() throws Exception {
-
+        mockMvc.perform(MockMvcRequestBuilders.get("/groups/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0]").value("Create Name"));
     }
 
     Group createGroup() {
