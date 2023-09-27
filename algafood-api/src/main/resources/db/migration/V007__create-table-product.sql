@@ -1,4 +1,4 @@
-CREATE TABLE product (
+CREATE TABLE products (
     id BIGINT NOT NULL AUTO_INCREMENT,
     restaurant_id BIGINT NOT NULL,
     name VARCHAR(80) NOT NULL,
@@ -8,5 +8,5 @@ CREATE TABLE product (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE product ADD CONSTRAINT fk_product_restaurant
-FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);
+ALTER TABLE products ADD CONSTRAINT fk_product_restaurant
+FOREIGN KEY (restaurant_id) REFERENCES restaurants (id);

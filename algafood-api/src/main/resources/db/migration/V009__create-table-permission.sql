@@ -1,4 +1,4 @@
-CREATE TABLE permission (
+CREATE TABLE permissions (
     id BIGINT NOT NULL AUTO_INCREMENT,
     description VARCHAR(60) NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE group_permission (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE group_permission ADD CONSTRAINT fk_group_permission_permission
-FOREIGN KEY (permission_id) REFERENCES permission (id);
+FOREIGN KEY (permission_id) REFERENCES permissions (id);
 
 ALTER TABLE group_permission ADD CONSTRAINT fk_group_permission_group
-FOREIGN KEY (group_id) REFERENCES group_user (id);
+FOREIGN KEY (group_id) REFERENCES groups(id);

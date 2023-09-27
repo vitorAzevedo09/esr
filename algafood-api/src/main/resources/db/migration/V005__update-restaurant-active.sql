@@ -1,6 +1,6 @@
-ALTER TABLE restaurant
+ALTER TABLE restaurants
   ADD active tinyint(1) DEFAULT 1 NOT NULL;
 
-UPDATE restaurant
+UPDATE restaurants
   SET active = true;
 

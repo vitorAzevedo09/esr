@@ -52,9 +52,9 @@ import javax.validation.constraints.NotNull;
  * }</pre>
  * </p>
  *
- * @Entity
+ * @Entity(name = "cuisines")
  */
-@Entity
+@Entity(name = "cuisines")
 public class Cuisine {
 
     /**

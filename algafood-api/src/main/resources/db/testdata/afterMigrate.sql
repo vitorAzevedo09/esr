@@ -2,48 +2,48 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- Delete data from various tables
-DELETE FROM city;
-DELETE FROM cuisine;
-DELETE FROM state;
-DELETE FROM payment_method;
-DELETE FROM group_user;
+DELETE FROM cities;
+DELETE FROM cuisines;
+DELETE FROM states;
+DELETE FROM payment_methods;
+DELETE FROM groups;
 DELETE FROM group_permission;
-DELETE FROM permission;
-DELETE FROM product;
-DELETE FROM restaurant;
+DELETE FROM permissions;
+DELETE FROM products;
+DELETE FROM restaurants;
 DELETE FROM restaurant_payment_method;
-DELETE FROM user;
+DELETE FROM users;
 DELETE FROM user_group;
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Reset auto-increment counters for tables
-ALTER TABLE city AUTO_INCREMENT = 1;
-ALTER TABLE cuisine AUTO_INCREMENT = 1;
-ALTER TABLE state AUTO_INCREMENT = 1;
-ALTER TABLE payment_method AUTO_INCREMENT = 1;
-ALTER TABLE group_user AUTO_INCREMENT = 1;
-ALTER TABLE permission AUTO_INCREMENT = 1;
-ALTER TABLE product AUTO_INCREMENT = 1;
-ALTER TABLE restaurant AUTO_INCREMENT = 1;
-ALTER TABLE user AUTO_INCREMENT = 1;
+ALTER TABLE cities AUTO_INCREMENT = 1;
+ALTER TABLE cuisines AUTO_INCREMENT = 1;
+ALTER TABLE states AUTO_INCREMENT = 1;
+ALTER TABLE payment_methods AUTO_INCREMENT = 1;
+ALTER TABLE groups AUTO_INCREMENT = 1;
+ALTER TABLE permissions AUTO_INCREMENT = 1;
+ALTER TABLE products AUTO_INCREMENT = 1;
+ALTER TABLE restaurants AUTO_INCREMENT = 1;
+ALTER TABLE users AUTO_INCREMENT = 1;
 
--- Insert data into "cuisine" table
-INSERT INTO cuisine (id, name) VALUES
+-- Insert data into "cuisines" table
+INSERT INTO cuisines (id, name) VALUES
 (1, 'Thai'),
 (2, 'Indian'),
 (3, 'Argentinian'),
 (4, 'Brazilian');
 
--- Insert data into "state" table
-INSERT INTO state (id, name) VALUES
+-- Insert data into "states" table
+INSERT INTO states (id, name) VALUES
 (1, 'Minas Gerais'),
 (2, 'São Paulo'),
 (3, 'Ceará');
 
--- Insert data into "city" table
-INSERT INTO city (id, name, state_id) VALUES
+-- Insert data into "cities" table
+INSERT INTO cities (id, name, state_id) VALUES
 (1, 'Uberlândia', 1),
 (2, 'Belo Horizonte', 1),
 (3, 'São Paulo', 2),
@@ -51,7 +51,7 @@ INSERT INTO city (id, name, state_id) VALUES
 (5, 'Fortaleza', 3);
 
 -- Insert data into "restaurant" table
-INSERT INTO restaurant (id, name, delivery_fee, cuisine_id, created_at, updated_at, address_city_id, address_zip_code, address_street, address_number, address_complement, address_neighborhood) VALUES
+INSERT INTO restaurants (id, name, delivery_fee, cuisine_id, created_at, updated_at, address_city_id, address_zip_code, address_street, address_number, address_complement, address_neighborhood) VALUES
 (1, 'Thai Gourmet', 10.00, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro', NULL),
 (2, 'Thai Delivery', 9.50, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'Tuk Tuk Indian Food', 15.00, 2, UTC_TIMESTAMP, UTC_TIMESTAMP, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -60,13 +60,13 @@ INSERT INTO restaurant (id, name, delivery_fee, cuisine_id, created_at, updated_
 (6, 'Maria Bar', 6.00, 4, UTC_TIMESTAMP, UTC_TIMESTAMP, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- Insert data into "payment_method" table
-INSERT INTO payment_method (id, description) VALUES
+INSERT INTO payment_methods (id, description) VALUES
 (1, 'Credit Card'),
 (2, 'Debit Card'),
 (3, 'Cash');
 
 -- Insert data into "permission" table
-INSERT INTO permission (id, name, description) VALUES
+INSERT INTO permissions (id, name, description) VALUES
 (1, 'VIEW_KITCHENS', 'Allows viewing kitchens'),
 (2, 'EDIT_KITCHENS', 'Allows editing kitchens');
 
@@ -80,7 +80,7 @@ INSERT INTO restaurant_payment_method (restaurant_id, payment_method_id) VALUES
 (6, 3);
 
 -- Insert data into "product" table
-INSERT INTO product (name, description, price, active, restaurant_id) VALUES
+INSERT INTO products (name, description, price, active, restaurant_id) VALUES
 ('Sweet and Sour Pork', 'Delicious pork with special sauce', 78.90, 1, 1),
 ('Spicy Thai Shrimp', '16 large shrimp in spicy sauce', 110.00, 1, 1),
 ('Spicy Salad with Grilled Meat', 'Leafy salad with thin cuts of grilled beef and our special red pepper sauce', 87.20, 1, 2),
@@ -92,7 +92,7 @@ INSERT INTO product (name, description, price, active, restaurant_id) VALUES
 ('Cupim Skewer', 'Served with flour, cassava, and vinaigrette', 8.00, 1, 6);
 
 -- Insert data "user" table
-INSERT INTO user (id, name, email, password, register_at) VALUES
+INSERT INTO users (id, name, email, password, register_at) VALUES
 (1, 'João da Silva', 'joao.ger@algafood.com', '123', UTC_TIMESTAMP),
 (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', UTC_TIMESTAMP),
 (3, 'José Souza', 'jose.aux@algafood.com', '123', UTC_TIMESTAMP),

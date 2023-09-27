@@ -1,4 +1,4 @@
-create table user(
+create table users (
 	id bigint not null auto_increment,
 	name varchar(80) not null,
 	email varchar(255) not null,
@@ -8,7 +8,7 @@ create table user(
 	primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table user_group(
+create table user_group (
 	user_id bigint not null,
 	group_id bigint not null,
 	
@@ -17,7 +17,7 @@ create table user_group(
 
 
 alter table user_group add constraint fk_user_group_group
-foreign key (group_id) references group_user (id);
+foreign key (group_id) references groups (id);
 
 alter table user_group add constraint fk_user_group_user
-foreign key (user_id) references user (id);
+foreign key (user_id) references users (id);

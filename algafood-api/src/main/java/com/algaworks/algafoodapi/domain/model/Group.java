@@ -49,9 +49,9 @@ import javax.persistence.ManyToMany;
  * }</pre>
  * </p>
  *
- * @Entity(name = "group_user")
+ * @Entity(name = "groups")
  */
-@Entity(name = "group_user")
+@Entity(name = "groups")
 public class Group {
 
 	/**

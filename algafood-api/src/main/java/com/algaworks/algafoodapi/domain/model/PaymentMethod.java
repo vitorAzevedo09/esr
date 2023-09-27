@@ -34,7 +34,7 @@ import javax.persistence.Id;
  *
  * @Entity
  */
-@Entity
+@Entity(name = "payment_methods")
 public class PaymentMethod {
 
 	/**

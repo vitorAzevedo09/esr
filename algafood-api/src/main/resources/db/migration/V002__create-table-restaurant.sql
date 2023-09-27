@@ -1,4 +1,4 @@
-CREATE TABLE restaurant (
+CREATE TABLE restaurants (
     id BIGINT NOT NULL AUTO_INCREMENT,
     cuisine_id BIGINT NOT NULL,
     name VARCHAR(80) NOT NULL,
@@ -15,5 +15,5 @@ CREATE TABLE restaurant (
     
     PRIMARY KEY (id),
     CONSTRAINT fk_restaurant_cuisine
-    FOREIGN KEY (cuisine_id) REFERENCES cuisine (id)
+    FOREIGN KEY (cuisine_id) REFERENCES cuisines (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

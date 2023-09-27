@@ -40,9 +40,9 @@ import javax.validation.constraints.NotNull;
  * }</pre>
  * </p>
  *
- * @Entity
+ * @Entity(name = cities)
  */
-@Entity
+@Entity(name = "cities")
 public class City {
 
     /**

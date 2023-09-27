@@ -4,7 +4,7 @@
   version="2.2">
   <named-query name="Restaurant.findByName">
     <query>
-    from Restaurant where name like concat('%', :name, '%')
+    from restaurants where name like concat('%', :name, '%')
     </query>
   </named-query>
 </entity-mappings>
