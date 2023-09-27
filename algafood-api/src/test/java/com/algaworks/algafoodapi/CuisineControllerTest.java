@@ -25,7 +25,7 @@ import java.util.Collections;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class CuisineControllerIT {
+public class CuisineControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -84,6 +84,14 @@ public class CuisineControllerIT {
                 .content("{\"name\":\"CuisineName\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("CuisineName"));
+    }
+
+    @Test
+    public void testDeleteCity() throws Exception {
+        Long cityIdToDelete = 1L;
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cozinhas/{id}", cityIdToDelete))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     Cuisine createCuisine() {

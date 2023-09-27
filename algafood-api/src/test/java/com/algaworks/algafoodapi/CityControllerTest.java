@@ -29,7 +29,7 @@ import static org.mockito.Mockito.doNothing;;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CityControllerIT {
+public class CityControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -89,7 +89,7 @@ public class CityControllerIT {
     public void testDeleteCity() throws Exception {
         Long cityIdToDelete = 1L;
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/cities/{id}", cityIdToDelete))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cidades/{id}", cityIdToDelete))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
