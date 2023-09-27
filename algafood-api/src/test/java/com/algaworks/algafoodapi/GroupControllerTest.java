@@ -55,7 +55,7 @@ public class GroupControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/grupos")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0]").value("Group Name"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("Group Name"));
 
     }
 
@@ -64,25 +64,25 @@ public class GroupControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/grupos/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0]").value("Name Group"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Group Name"));
     }
 
     @Test
     public void testCreateGroup() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/grupos")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"GroupName\"}"))
+                .content("{\"name\":\"Group Name\"}"))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("GroupName"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Group Name"));
     }
 
     @Test
     public void testUpdateGroup() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/grupos/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"GroupName\"}"))
+                .content("{\"name\":\"Group Name\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("GroupName"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Group Name"));
     }
 
     @Test
@@ -96,7 +96,7 @@ public class GroupControllerTest {
     Group createGroup() {
         Group group = new Group();
         group.setId(1L);
-        group.setName("Name Group");
+        group.setName("Group Name");
         return group;
     }
 }
