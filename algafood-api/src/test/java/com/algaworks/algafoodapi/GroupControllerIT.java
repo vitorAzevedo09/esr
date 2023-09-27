@@ -18,7 +18,9 @@ import com.algaworks.algafoodapi.domain.model.Group;
 import com.algaworks.algafoodapi.domain.service.GroupService;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
 
 import java.util.Collections;
 
@@ -36,12 +38,21 @@ public class GroupControllerIT {
     @BeforeEach
     void setUp(){
         when(groupService.findAll(any(Pageable.class)))
-    .thenReturn(new PageImpl<>(Collections.singletonList(createGroup())));
+            .thenReturn(new PageImpl<>(Collections.singletonList(createGroup())));
+        when(groupService.findOrFail(anyLong()))
+            .thenReturn(createGroup());
+        when(groupService.create(any(Group.class)))
+            .thenReturn(createGroup());
+        when(groupService.update(anyLong(),any(Group.class)))
+            .thenReturn(createGroup());
+        doNothing()
+            .when(groupService)
+            .delete(anyLong());
     }
 
     @Test
     public void testGetAllGroups() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/groups")
+        mockMvc.perform(MockMvcRequestBuilders.get("/grupos")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0]").value("Group Name"));
@@ -49,8 +60,37 @@ public class GroupControllerIT {
     }
 
     @Test
-    public void testGetOne() throws Exception {
+    public void testGetGroupById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/grupos/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0]").value("Name Group"));
+    }
 
+    @Test
+    public void testCreateGroup() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/grupos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"GroupName\"}"))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("GroupName"));
+    }
+
+    @Test
+    public void testUpdateGroup() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/grupos/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"GroupName\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("GroupName"));
+    }
+
+    @Test
+    public void testDeleteGroup() throws Exception {
+        Long groupIdToDelete = 1L;
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/grupos/{id}", groupIdToDelete))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     Group createGroup() {

@@ -86,6 +86,14 @@ public class CuisineControllerIT {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("CuisineName"));
     }
 
+    @Test
+    public void testDeleteCity() throws Exception {
+        Long cityIdToDelete = 1L;
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cozinhas/{id}", cityIdToDelete))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
     Cuisine createCuisine() {
         Cuisine cuisine = new Cuisine();
         cuisine.setId(1L);

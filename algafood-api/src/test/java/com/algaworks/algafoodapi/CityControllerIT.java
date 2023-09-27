@@ -89,7 +89,7 @@ public class CityControllerIT {
     public void testDeleteCity() throws Exception {
         Long cityIdToDelete = 1L;
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/cities/{id}", cityIdToDelete))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cidades/{id}", cityIdToDelete))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
