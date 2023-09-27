@@ -27,7 +27,7 @@ import java.util.Collections;
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class GroupControllerIT {
+public class GroupControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

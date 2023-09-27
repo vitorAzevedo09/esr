@@ -25,7 +25,7 @@ import java.util.Collections;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class CuisineControllerIT {
+public class CuisineControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

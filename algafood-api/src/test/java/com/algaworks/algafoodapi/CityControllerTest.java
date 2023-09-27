@@ -29,7 +29,7 @@ import static org.mockito.Mockito.doNothing;;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CityControllerIT {
+public class CityControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
