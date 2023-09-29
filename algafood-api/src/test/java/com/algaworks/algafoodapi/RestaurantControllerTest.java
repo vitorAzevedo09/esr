@@ -70,7 +70,7 @@ public class RestaurantControllerTest {
   public void testCreateRestaurant() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.post("/restaurantes")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"name\":\"Restaurant Name\"}"))
+        .content("{\"description\":\"Restaurant Name\"}"))
         .andExpect(MockMvcResultMatchers.status().isCreated())
         .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Restaurant Name"));
   }
@@ -79,7 +79,7 @@ public class RestaurantControllerTest {
   public void testUpdateRestaurant() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.put("/restaurantes/{id}", 1L)
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"name\":\"Restaurant Name\"}"))
+        .content("{\"description\":\"Restaurant Name\"}"))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Restaurant Name"));
   }

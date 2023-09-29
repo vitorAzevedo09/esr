@@ -20,7 +20,7 @@ import java.util.List;
  * RestauranteProdutoController
  */
 @RestController
-@RequestMapping("/restaurantes/{restaurantId}/produtos/")
+@RequestMapping("/restaurantes/{restaurantId}/produtos")
 public class RestaurantProductController {
 
     @Autowired

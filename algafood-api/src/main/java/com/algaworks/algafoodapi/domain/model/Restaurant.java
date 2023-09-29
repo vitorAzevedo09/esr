@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -143,7 +144,7 @@ public class Restaurant {
     @JoinTable(name = "restaurant_payment_method", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
     private List<PaymentMethod> paymentMethods = new ArrayList<>();
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
     /**
