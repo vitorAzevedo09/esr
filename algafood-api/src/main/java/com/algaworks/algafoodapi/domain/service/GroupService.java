@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafoodapi.domain.exception.GroupNotFoundException;
 import com.algaworks.algafoodapi.domain.model.Group;
+import com.algaworks.algafoodapi.domain.model.Permission;
 import com.algaworks.algafoodapi.domain.repository.GroupRepository;
 
 @Service
@@ -16,6 +17,9 @@ public class GroupService {
 
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private PermissionService pService;
 
     public Group findOrFail(final Long groupId) {
         return groupRepository.findById(groupId)
@@ -33,7 +37,7 @@ public class GroupService {
 
     @Transactional
     public Group update(final Long id, Group groupInput) {
-        if(!groupRepository.existsById(id)){
+        if (!groupRepository.existsById(id)) {
             throw new GroupNotFoundException(id);
         }
         groupInput.setId(id);
@@ -49,4 +53,17 @@ public class GroupService {
         throw new GroupNotFoundException(id);
     }
 
+    @Transactional
+    public void addPermission(final Long groupID, final Long permissionID) {
+        Group group = findOrFail(groupID);
+        Permission permission = pService.findOrFail(permissionID);
+        group.addPermission(permission);
+    }
+
+    @Transactional
+    public void removePermission(final Long groupID, final Long permissionID) {
+        Group group = findOrFail(groupID);
+        Permission permission = pService.findOrFail(permissionID);
+        group.removePermission(permission);
+    }
 }

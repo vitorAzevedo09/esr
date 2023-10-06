@@ -130,4 +130,12 @@ public class Group {
 	public void setPermissions(List<Permission> permissions) {
 		this.permissions = permissions;
 	}
+
+	public boolean addPermission(Permission p) {
+		return this.permissions.add(p);
+	}
+
+	public boolean removePermission(Permission p) {
+		return this.permissions.remove(p);
+	}
 }

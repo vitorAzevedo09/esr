@@ -9,7 +9,7 @@ import javax.persistence.Id;
 /**
  * Permissao
  */
-@Entity
+@Entity(name = "permissions")
 public class Permission {
 
     @Id
@@ -21,6 +21,14 @@ public class Permission {
 
     @Column(nullable = false)
     private String description;
+
+    public Permission() {
+    }
+
+    public Permission(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;

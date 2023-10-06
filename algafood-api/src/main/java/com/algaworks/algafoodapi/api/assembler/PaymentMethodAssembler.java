@@ -1,5 +1,10 @@
 package com.algaworks.algafoodapi.api.assembler;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafoodapi.api.dto.PaymentMethodOutput;
@@ -15,4 +20,10 @@ public class PaymentMethodAssembler {
     return new PaymentMethodOutput(paymentMethod.getId(), paymentMethod.getDescription());
   }
 
+  public Page<PaymentMethodOutput> toPage(List<PaymentMethod> payments, Pageable pageable) {
+    List<PaymentMethodOutput> paymentsOutput = payments.stream()
+        .map(p -> toOutput(p))
+        .toList();
+    return new PageImpl<PaymentMethodOutput>(paymentsOutput, pageable, payments.size());
+  }
 }

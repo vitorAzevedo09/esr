@@ -98,3 +98,10 @@ INSERT INTO users (id, name, email, password, register_at) VALUES
 (3, 'José Souza', 'jose.aux@algafood.com', '123', UTC_TIMESTAMP),
 (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', UTC_TIMESTAMP);
 
+-- insert data "groups" table
+insert into groups(id, name) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
+
+-- insert association group-permission table
+insert into group_permission(group_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
+
+
