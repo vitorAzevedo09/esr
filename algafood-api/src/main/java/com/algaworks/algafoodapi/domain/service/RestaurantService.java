@@ -101,4 +101,16 @@ public class RestaurantService {
         restaurant.getPaymentMethods().remove(paymentMethod);
     }
 
+    @Transactional
+    public void close(final Long id) {
+        Restaurant restaurant = findOrFail(id);
+        restaurant.close();
+    }
+
+    @Transactional
+    public void open(final Long id) {
+        Restaurant restaurant = findOrFail(id);
+        restaurant.open();
+    }
+
 }

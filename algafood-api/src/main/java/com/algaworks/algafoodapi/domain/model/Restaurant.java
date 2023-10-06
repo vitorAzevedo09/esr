@@ -125,6 +125,9 @@ public class Restaurant {
     @Column(name = "active", nullable = false)
     private Boolean active = Boolean.TRUE;
 
+    @Column(name = "open", nullable = false)
+    private Boolean open = Boolean.TRUE;
+
     @ManyToOne
     @JoinColumn(name = "cuisine_id", nullable = false)
     private Cuisine cuisine;
@@ -258,6 +261,22 @@ public class Restaurant {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public Boolean getOpen() {
+        return open;
+    }
+
+    public void setOpen(Boolean open) {
+        this.open = open;
+    }
+
+    public void close() {
+        setOpen(false);
+    }
+
+    public void open() {
+        setOpen(true);
     }
 
     // Getters and setters omitted for brevity.
