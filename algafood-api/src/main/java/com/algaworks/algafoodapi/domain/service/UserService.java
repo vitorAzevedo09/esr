@@ -9,8 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.algaworks.algafoodapi.domain.exception.GroupNotFoundException;
+import com.algaworks.algafoodapi.domain.exception.GroupConflictIdException;
 import com.algaworks.algafoodapi.domain.exception.UserNotFoundException;
+import com.algaworks.algafoodapi.domain.model.Group;
 import com.algaworks.algafoodapi.domain.model.User;
 import com.algaworks.algafoodapi.domain.repository.UserRepository;
 
@@ -20,6 +21,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private GroupService gService;
+
     public Page<User> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
@@ -27,7 +31,7 @@ public class UserService {
     @Transactional
     public User findOrFail(final Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new GroupNotFoundException(userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Transactional
@@ -41,8 +45,8 @@ public class UserService {
 
     @Transactional
     public User update(final Long id, User user) {
-        if(!userRepository.existsById(id))
-        throw new UserNotFoundException(id);
+        if (!userRepository.existsById(id))
+            throw new UserNotFoundException(id);
         user.setId(id);
         return userRepository.save(user);
     }
@@ -53,6 +57,23 @@ public class UserService {
         if (user.passwordDontMatches(actualPassword)) {
             throw new RuntimeException("Senha atual informada não coincide com a senha do usuário.");
         }
+    }
+
+    @Transactional
+    public void addGroupToUser(final Long userID, final Long groupID) {
+        User u = findOrFail(userID);
+        Group g = gService.findOrFail(groupID);
+        if (!u.getGroups().contains(g)) {
+            u.addGroup(g);
+        }
+        throw new GroupConflictIdException(groupID);
+    }
+
+    @Transactional
+    public void removeGroupToUser(final Long userID, final Long groupID) {
+        User u = findOrFail(userID);
+        Group g = gService.findOrFail(groupID);
+        u.removeGroup(g);
     }
 
 }

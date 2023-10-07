@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.algaworks.algafoodapi.domain.exception.GroupConflictIdException;
+
 /**
  * Represents a user in the system. Each user has a unique identifier, a name,
  * an email, a password, a registration date, and can be associated with
@@ -42,7 +44,7 @@ import org.hibernate.annotations.CreationTimestamp;
  * </p>
  * 
  * <p>
- * The {@code registrationDate} field is automatically set with the date and
+ * The {@code register_at} field is automatically set with the date and
  * time
  * when the user was registered in the system.
  * </p>
@@ -94,7 +96,7 @@ public class User {
 
         private String password;
 
-        private LocalDateTime registrationDate;
+        private LocalDateTime register_at;
 
         private List<Group> groups = new ArrayList<>();
 
@@ -127,11 +129,11 @@ public class User {
         }
 
         /**
-         * @param registrationDate
+         * @param register_at
          * @return
          */
-        public Builder setRegistrationDate(LocalDateTime registrationDate) {
-            this.registrationDate = registrationDate;
+        public Builder setRegistrationDate(LocalDateTime register_at) {
+            this.register_at = register_at;
             return this;
         }
 
@@ -155,18 +157,21 @@ public class User {
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime registrationDate;
+    private LocalDateTime register_at;
 
     @ManyToMany
     @JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<Group> groups = new ArrayList<>();
+
+    public User() {
+    }
 
     public User(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
         this.email = builder.email;
         this.password = builder.password;
-        this.registrationDate = builder.registrationDate;
+        this.register_at = builder.register_at;
         this.groups = builder.groups;
     }
 
@@ -211,11 +216,11 @@ public class User {
     }
 
     public LocalDateTime getRegistrationDate() {
-        return registrationDate;
+        return register_at;
     }
 
-    public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setRegistrationDate(LocalDateTime register_at) {
+        this.register_at = register_at;
     }
 
     public boolean passwordMatches(String password) {
@@ -224,5 +229,16 @@ public class User {
 
     public boolean passwordDontMatches(String password) {
         return !passwordMatches(password);
+    }
+
+    public void addGroup(Group g) {
+        if (!this.groups.contains(g)) {
+            this.groups.add(g);
+        }
+        throw new GroupConflictIdException(g.getId());
+    }
+
+    public void removeGroup(Group g) {
+        this.groups.remove(g);
     }
 }

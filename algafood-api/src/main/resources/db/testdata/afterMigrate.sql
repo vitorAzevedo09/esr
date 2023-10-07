@@ -104,4 +104,8 @@ insert into groups(id, name) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secret
 -- insert association group-permission table
 insert into group_permission(group_id, permission_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
 
+-- insert association user-group table
+insert into user_group(user_id, group_id) values (1,1), (1,2), (2,1), (2,2);
+
+
 
