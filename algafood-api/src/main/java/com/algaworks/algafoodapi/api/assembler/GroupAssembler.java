@@ -1,6 +1,7 @@
 package com.algaworks.algafoodapi.api.assembler;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,11 +28,11 @@ public class GroupAssembler {
         return group;
     }
 
-    public List<GroupOutput> toCollectionOutput(List<Group> groups) {
+    public List<GroupOutput> toCollectionOutput(Set<Group> groups) {
         return groups.stream().map(g -> toOutput(g)).toList();
     }
 
-    public Page<GroupOutput> fromListEntitytoPageOutput(List<Group> groups, Pageable pageable) {
+    public Page<GroupOutput> fromListEntitytoPageOutput(Set<Group> groups, Pageable pageable) {
         List<GroupOutput> gOutputs = toCollectionOutput(groups);
         return new PageImpl<>(gOutputs, pageable, gOutputs.size());
     }

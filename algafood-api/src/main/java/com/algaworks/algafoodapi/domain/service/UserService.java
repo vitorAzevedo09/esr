@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.algaworks.algafoodapi.domain.exception.GroupConflictIdException;
 import com.algaworks.algafoodapi.domain.exception.UserNotFoundException;
 import com.algaworks.algafoodapi.domain.model.Group;
 import com.algaworks.algafoodapi.domain.model.User;
@@ -63,10 +62,7 @@ public class UserService {
     public void addGroupToUser(final Long userID, final Long groupID) {
         User u = findOrFail(userID);
         Group g = gService.findOrFail(groupID);
-        if (!u.getGroups().contains(g)) {
-            u.addGroup(g);
-        }
-        throw new GroupConflictIdException(groupID);
+        u.addGroup(g);
     }
 
     @Transactional

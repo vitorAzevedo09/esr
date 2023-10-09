@@ -1,8 +1,7 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
-
-import com.algaworks.algafoodapi.domain.exception.GroupConflictIdException;
 
 /**
  * Represents a user in the system. Each user has a unique identifier, a name,
@@ -98,7 +95,7 @@ public class User {
 
         private LocalDateTime register_at;
 
-        private List<Group> groups = new ArrayList<>();
+        private Set<Group> groups;
 
         private Builder() {
         }
@@ -123,7 +120,7 @@ public class User {
             return this;
         }
 
-        public Builder setGroups(List<Group> groups) {
+        public Builder setGroups(Set<Group> groups) {
             this.groups = groups;
             return this;
         }
@@ -161,7 +158,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "user_group", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groups = new ArrayList<>();
+    private Set<Group> groups;
 
     public User() {
     }
@@ -175,11 +172,11 @@ public class User {
         this.groups = builder.groups;
     }
 
-    public List<Group> getGroups() {
+    public Set<Group> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(Set<Group> groups) {
         this.groups = groups;
     }
 
@@ -232,10 +229,7 @@ public class User {
     }
 
     public void addGroup(Group g) {
-        if (!this.groups.contains(g)) {
-            this.groups.add(g);
-        }
-        throw new GroupConflictIdException(g.getId());
+        this.groups.add(g);
     }
 
     public void removeGroup(Group g) {
