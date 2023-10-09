@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -147,6 +148,18 @@ public class Restaurant {
     @JoinTable(name = "restaurant_payment_method", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
     private List<PaymentMethod> paymentMethods = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "restaurant_user", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> users;
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
@@ -169,9 +182,9 @@ public class Restaurant {
      * 
      * @param fields A map containing field names and values.
      */
-    public void setFromMap(Map<String, Object> fields) {
+    public void setFromMap(final Map<String, Object> fields) {
         fields.forEach((k, v) -> {
-            Field field = ReflectionUtils.findField(Restaurant.class, k);
+            final Field field = ReflectionUtils.findField(Restaurant.class, k);
             if (!(field == null)) {
                 field.setAccessible(true);
                 if (v instanceof Double) {
@@ -187,7 +200,7 @@ public class Restaurant {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -195,7 +208,7 @@ public class Restaurant {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -203,7 +216,7 @@ public class Restaurant {
         return deliveryFee;
     }
 
-    public void setDeliveryFee(BigDecimal deliveryFee) {
+    public void setDeliveryFee(final BigDecimal deliveryFee) {
         this.deliveryFee = deliveryFee;
     }
 
@@ -211,7 +224,7 @@ public class Restaurant {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(final Boolean active) {
         this.active = active;
     }
 
@@ -219,7 +232,7 @@ public class Restaurant {
         return cuisine;
     }
 
-    public void setCuisine(Cuisine cuisine) {
+    public void setCuisine(final Cuisine cuisine) {
         this.cuisine = cuisine;
     }
 
@@ -227,7 +240,7 @@ public class Restaurant {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(final Address address) {
         this.address = address;
     }
 
@@ -235,7 +248,7 @@ public class Restaurant {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(final LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -243,7 +256,7 @@ public class Restaurant {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(final LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -251,7 +264,7 @@ public class Restaurant {
         return paymentMethods;
     }
 
-    public void setPaymentMethods(List<PaymentMethod> paymentMethods) {
+    public void setPaymentMethods(final List<PaymentMethod> paymentMethods) {
         this.paymentMethods = paymentMethods;
     }
 
@@ -259,7 +272,7 @@ public class Restaurant {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(final List<Product> products) {
         this.products = products;
     }
 
@@ -267,7 +280,7 @@ public class Restaurant {
         return open;
     }
 
-    public void setOpen(Boolean open) {
+    public void setOpen(final Boolean open) {
         this.open = open;
     }
 
@@ -278,6 +291,4 @@ public class Restaurant {
     public void open() {
         setOpen(true);
     }
-
-    // Getters and setters omitted for brevity.
 }

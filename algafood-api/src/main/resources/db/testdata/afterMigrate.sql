@@ -14,6 +14,8 @@ DELETE FROM restaurants;
 DELETE FROM restaurant_payment_method;
 DELETE FROM users;
 DELETE FROM user_group;
+DELETE FROM restaurant_user;
+
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS = 1;
@@ -28,6 +30,8 @@ ALTER TABLE permissions AUTO_INCREMENT = 1;
 ALTER TABLE products AUTO_INCREMENT = 1;
 ALTER TABLE restaurants AUTO_INCREMENT = 1;
 ALTER TABLE users AUTO_INCREMENT = 1;
+ALTER TABLE user_group;
+ALTER TABLE restaurant_user;
 
 -- Insert data into "cuisines" table
 INSERT INTO cuisines (id, name) VALUES
@@ -107,5 +111,7 @@ insert into group_permission(group_id, permission_id) values (1, 1), (1, 2), (2,
 -- insert association user-group table
 insert into user_group(user_id, group_id) values (1,1), (1,2), (2,1), (2,2);
 
+-- insert association user-restaurant table
+insert into restaurant_user(restaurant_id, user_id) values (1,1), (1,2), (2,1), (2,2);
 
 

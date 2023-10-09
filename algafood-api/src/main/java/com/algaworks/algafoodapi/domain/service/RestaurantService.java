@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.algaworks.algafoodapi.domain.model.PaymentMethod;
 import com.algaworks.algafoodapi.domain.model.Restaurant;
+import com.algaworks.algafoodapi.domain.model.User;
 import com.algaworks.algafoodapi.domain.repository.RestaurantRepository;
 import com.algaworks.algafoodapi.domain.exception.RestaurantNotFoundException;
 
@@ -29,6 +30,9 @@ public class RestaurantService {
 
     @Autowired
     private PaymentMethodService paymentMethodService;
+
+    @Autowired
+    private UserService uService;
 
     public Page<Restaurant> findAll(Pageable page) {
         return restaurantRepository.findAll(page);
@@ -98,7 +102,21 @@ public class RestaurantService {
     public void addPaymentMethod(Long idRestaurant, Long idPaymentMethod) {
         Restaurant restaurant = findOrFail(idRestaurant);
         PaymentMethod paymentMethod = paymentMethodService.findOrFail(idPaymentMethod);
-        restaurant.getPaymentMethods().remove(paymentMethod);
+        restaurant.getPaymentMethods().add(paymentMethod);
+    }
+
+    @Transactional
+    public void removeUser(Long restaurantID, Long userID) {
+        Restaurant restaurant = findOrFail(restaurantID);
+        User user = uService.findOrFail(userID);
+        restaurant.getUsers().remove(user);
+    }
+
+    @Transactional
+    public void addUser(Long restaurantID, Long userID) {
+        Restaurant restaurant = findOrFail(restaurantID);
+        User user = uService.findOrFail(userID);
+        restaurant.getUsers().add(user);
     }
 
     @Transactional
