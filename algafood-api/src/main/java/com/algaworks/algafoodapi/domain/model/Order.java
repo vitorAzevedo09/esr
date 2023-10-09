@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 /**
  * 
  */
-@Entity
+@Entity(name = "orders")
 public class Order {
 
     @Id
@@ -33,6 +35,7 @@ public class Order {
     @Embedded
     private Address deliveryAddress;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @CreationTimestamp
@@ -51,7 +54,7 @@ public class Order {
     private Restaurant restaurant;
 
     @ManyToOne
-    @JoinColumn(name = "user_client_id", nullable = false)
+    @JoinColumn(name = "client_id", nullable = false)
     private User client;
 
     @OneToMany(mappedBy = "order")

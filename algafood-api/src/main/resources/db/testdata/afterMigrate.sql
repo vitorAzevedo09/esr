@@ -15,6 +15,8 @@ DELETE FROM restaurant_payment_method;
 DELETE FROM users;
 DELETE FROM user_group;
 DELETE FROM restaurant_user;
+DELETE FROM orders;
+DELETE FROM order_items;
 
 
 -- Re-enable foreign key checks
@@ -30,8 +32,10 @@ ALTER TABLE permissions AUTO_INCREMENT = 1;
 ALTER TABLE products AUTO_INCREMENT = 1;
 ALTER TABLE restaurants AUTO_INCREMENT = 1;
 ALTER TABLE users AUTO_INCREMENT = 1;
-ALTER TABLE user_group;
-ALTER TABLE restaurant_user;
+ALTER TABLE user_group AUTO_INCREMENT = 1;
+ALTER TABLE restaurant_user AUTO_INCREMENT = 1;
+ALTER TABLE orders AUTO_INCREMENT = 1;
+ALTER TABLE order_items AUTO_INCREMENT = 1;
 
 -- Insert data into "cuisines" table
 INSERT INTO cuisines (id, name) VALUES
@@ -55,7 +59,7 @@ INSERT INTO cities (id, name, state_id) VALUES
 (5, 'Fortaleza', 3);
 
 -- Insert data into "restaurant" table
-INSERT INTO restaurants (id, name, delivery_fee, cuisine_id, created_at, updated_at, address_city_id, address_zip_code, address_street, address_number, address_complement, address_neighborhood) VALUES
+INSERT INTO restaurants (id, name, delivery_fee, cuisine_id, created_at, updated_at, address_city_id, address_zip_code, address_street, address_number, address_neighborhood, address_complement) VALUES
 (1, 'Thai Gourmet', 10.00, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro', NULL),
 (2, 'Thai Delivery', 9.50, 1, UTC_TIMESTAMP, UTC_TIMESTAMP, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'Tuk Tuk Indian Food', 15.00, 2, UTC_TIMESTAMP, UTC_TIMESTAMP, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -114,4 +118,33 @@ insert into user_group(user_id, group_id) values (1,1), (1,2), (2,1), (2,2);
 -- insert association user-restaurant table
 insert into restaurant_user(restaurant_id, user_id) values (1,1), (1,2), (2,1), (2,2);
 
+-- Inserting a sample order
+INSERT INTO orders (subtotal, shipping_fee, total_value, 
+    status, creation_date, payment_method_id, restaurant_id, client_id,
+    address_city_id, address_zip_code, address_street, address_number, address_neighborhood, address_complement)
+VALUES (249.99, 10.00, 259.99,
+    'CREATED', UTC_TIMESTAMP, 1, 1, 1,
+     1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro', NULL);
+
+-- Inserting another sample order
+INSERT INTO orders (subtotal, shipping_fee, total_value, 
+    status, creation_date, payment_method_id, restaurant_id, client_id,
+    address_city_id, address_zip_code, address_street, address_number, address_neighborhood, address_complement)
+VALUES (199.99, 8.00, 207.99,
+    'CREATED', UTC_TIMESTAMP, 2, 2, 2,
+     2, '38400-849', 'Rua Beatriz Cristine', '1300', 'São José', NULL);
+
+-- Inserting order items for the first order
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, total_price, observation)
+VALUES (1, 1, 2, 49.99, 99.98, 'No special notes');
+
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, total_price, observation)
+VALUES (1, 2, 1, 99.99, 99.99, 'Extra cheese, please');
+
+-- Inserting order items for the second order
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, total_price, observation)
+VALUES (2, 2, 3, 29.99, 89.97, 'Gluten-free crust');
+
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, total_price, observation)
+VALUES (2, 2, 1, 49.99, 49.99, 'No onions');
 
