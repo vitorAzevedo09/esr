@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -36,7 +37,7 @@ public class Order {
     private Address deliveryAddress;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.CREATED;
 
     @CreationTimestamp
     private LocalDateTime creationDate;
@@ -57,8 +58,16 @@ public class Order {
     @JoinColumn(name = "client_id", nullable = false)
     private User client;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
+
+    public void calcTotalValue() {
+        this.subtotal = getItems().stream()
+                .map(item -> item.getTotalPrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.totalValue = this.subtotal.add(this.shippingFee);
+    }
 
     public Long getId() {
         return id;

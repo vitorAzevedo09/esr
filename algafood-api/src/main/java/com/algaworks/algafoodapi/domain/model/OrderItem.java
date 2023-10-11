@@ -88,4 +88,19 @@ public class OrderItem {
     this.product = product;
   }
 
+  public void calcUnitPrice() {
+    BigDecimal unitPrice = this.getUnitPrice();
+    Integer quantity = this.getQuantity();
+
+    if (unitPrice == null) {
+      unitPrice = BigDecimal.ZERO;
+    }
+
+    if (quantity == null) {
+      quantity = 0;
+    }
+
+    this.setTotalPrice(unitPrice.multiply(new BigDecimal(quantity)));
+  }
+
 }

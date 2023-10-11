@@ -2,7 +2,6 @@ package com.algaworks.algafoodapi.api.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * OrderOutput
@@ -18,8 +17,7 @@ public record OrderOutput(
         LocalDateTime cancellationDate,
         LocalDateTime deliveryDate,
         PaymentMethodOutput paymentMethod,
-        RestaurantOutput restaurant,
-        List<OrderItemOutput> items) {
+        RestaurantOutput restaurant) {
 
     public static OrderOutputBuilder builder() {
         return new OrderOutputBuilder();
@@ -39,7 +37,6 @@ public record OrderOutput(
         private LocalDateTime deliveryDate;
         private PaymentMethodOutput paymentMethod;
         private RestaurantOutput restaurant;
-        private List<OrderItemOutput> items;
 
         private OrderOutputBuilder() {
         }
@@ -99,11 +96,6 @@ public record OrderOutput(
             return this;
         }
 
-        public OrderOutputBuilder items(List<OrderItemOutput> items) {
-            this.items = items;
-            return this;
-        }
-
         public OrderOutput build() {
             OrderOutput orderOutput = new OrderOutput(
                     this.id,
@@ -116,8 +108,7 @@ public record OrderOutput(
                     this.cancellationDate,
                     this.deliveryDate,
                     this.paymentMethod,
-                    this.restaurant,
-                    this.items);
+                    this.restaurant);
             return orderOutput;
         }
     }

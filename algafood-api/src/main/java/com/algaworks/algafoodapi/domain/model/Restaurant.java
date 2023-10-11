@@ -196,6 +196,10 @@ public class Restaurant {
         });
     }
 
+    public boolean acceptPaymentMethod(PaymentMethod paymentMethod) {
+        return getPaymentMethods().contains(paymentMethod);
+    }
+
     public Long getId() {
         return id;
     }

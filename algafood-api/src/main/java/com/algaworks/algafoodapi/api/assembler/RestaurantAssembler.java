@@ -2,6 +2,7 @@ package com.algaworks.algafoodapi.api.assembler;
 
 import org.springframework.stereotype.Component;
 
+import com.algaworks.algafoodapi.api.dto.RestaurantIdInput;
 import com.algaworks.algafoodapi.api.dto.RestaurantInput;
 import com.algaworks.algafoodapi.api.dto.RestaurantOutput;
 import com.algaworks.algafoodapi.domain.model.Restaurant;
@@ -15,7 +16,6 @@ public class RestaurantAssembler {
     public RestaurantOutput toOutput(Restaurant restaurant) {
         RestaurantOutput restaurantOutput = new RestaurantOutput(restaurant.getId(),
                 restaurant.getName(),
-                restaurant.getDeliveryFee(),
                 restaurant.getActive());
         return restaurantOutput;
     }
@@ -33,6 +33,12 @@ public class RestaurantAssembler {
         } else {
             restaurant.deactive();
         }
+        return restaurant;
+    }
+
+    public Restaurant toEntity(RestaurantIdInput restaurantIdInput) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(restaurantIdInput.id());
         return restaurant;
     }
 
