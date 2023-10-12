@@ -58,6 +58,7 @@ public class OrderAssembler {
                                 .confirmationDate(order.getConfirmationDate())
                                 .cancellationDate(order.getCancellationDate())
                                 .deliveryDate(order.getDeliveryDate())
+                                .status(order.getStatus())
                                 .address(
                                                 aAssembler.toOutput(
                                                                 order.getDeliveryAddress()))

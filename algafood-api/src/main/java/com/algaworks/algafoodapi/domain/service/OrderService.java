@@ -45,4 +45,8 @@ public class OrderService {
     oRepository.save(order);
   }
 
+  @Transactional
+  public void updateStatus(final Long id) {
+    findOrFail(id).setNextStatus();
+  }
 }

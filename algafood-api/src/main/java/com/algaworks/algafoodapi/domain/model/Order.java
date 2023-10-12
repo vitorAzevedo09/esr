@@ -1,7 +1,7 @@
 package com.algaworks.algafoodapi.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,11 +40,11 @@ public class Order {
     private OrderStatus status = OrderStatus.CREATED;
 
     @CreationTimestamp
-    private LocalDateTime creationDate;
+    private OffsetDateTime creationDate;
 
-    private LocalDateTime confirmationDate;
-    private LocalDateTime cancellationDate;
-    private LocalDateTime deliveryDate;
+    private OffsetDateTime confirmationDate;
+    private OffsetDateTime cancellationDate;
+    private OffsetDateTime deliveryDate;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -67,6 +67,25 @@ public class Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.totalValue = this.subtotal.add(this.shippingFee);
+    }
+
+    public void setNextStatus() {
+        switch (this.status) {
+            case CREATED:
+                setStatus(OrderStatus.CONFIRMED);
+                setConfirmationDate(OffsetDateTime.now());
+                break;
+            case CONFIRMED:
+                setStatus(OrderStatus.DELIVERIED);
+                setConfirmationDate(OffsetDateTime.now());
+                break;
+            case DELIVERIED:
+                setStatus(OrderStatus.CANCELLED);
+                setConfirmationDate(OffsetDateTime.now());
+                break;
+            default:
+                break;
+        }
     }
 
     public Long getId() {
@@ -117,38 +136,6 @@ public class Order {
         this.status = status;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public LocalDateTime getConfirmationDate() {
-        return confirmationDate;
-    }
-
-    public void setConfirmationDate(LocalDateTime confirmationDate) {
-        this.confirmationDate = confirmationDate;
-    }
-
-    public LocalDateTime getCancellationDate() {
-        return cancellationDate;
-    }
-
-    public void setCancellationDate(LocalDateTime cancellationDate) {
-        this.cancellationDate = cancellationDate;
-    }
-
-    public LocalDateTime getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(LocalDateTime deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
-
     public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
@@ -179,6 +166,38 @@ public class Order {
 
     public void setItems(List<OrderItem> items) {
         this.items = items;
+    }
+
+    public OffsetDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(OffsetDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public OffsetDateTime getConfirmationDate() {
+        return confirmationDate;
+    }
+
+    public void setConfirmationDate(OffsetDateTime confirmationDate) {
+        this.confirmationDate = confirmationDate;
+    }
+
+    public OffsetDateTime getCancellationDate() {
+        return cancellationDate;
+    }
+
+    public void setCancellationDate(OffsetDateTime cancellationDate) {
+        this.cancellationDate = cancellationDate;
+    }
+
+    public OffsetDateTime getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(OffsetDateTime deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
 }

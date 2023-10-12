@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -47,6 +48,12 @@ public class OrderController {
   @ResponseStatus(code = HttpStatus.CREATED)
   public void create(@Valid @RequestBody OrderInput oInput) {
     oService.create(oAssembler.toEntity(oInput));
+  }
+
+  @PutMapping("/{orderID}/next-status")
+  @ResponseStatus(code = HttpStatus.OK)
+  public void updateStatus(@PathVariable final Long orderID) {
+    oService.updateStatus(orderID);
   }
 
 }

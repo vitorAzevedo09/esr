@@ -58,7 +58,7 @@ public class CityController {
 
     @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public CityOutput update(@PathVariable("id") final Long id,@Valid @RequestBody CityInput cityInput) {
+    public CityOutput update(@PathVariable("id") final Long id, @Valid @RequestBody CityInput cityInput) {
         City city = cityAssembler.toEntity(cityInput);
         city = cityService.update(id, city);
         return cityAssembler.toOutput(city);
