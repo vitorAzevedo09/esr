@@ -10,6 +10,7 @@ import com.algaworks.algafoodapi.api.dto.OrderOutput;
 import com.algaworks.algafoodapi.domain.model.Order;
 import com.algaworks.algafoodapi.domain.model.OrderItem;
 import com.algaworks.algafoodapi.domain.model.Product;
+import com.algaworks.algafoodapi.domain.service.ProductService;
 
 /**
  * OrderAssembler
@@ -26,6 +27,9 @@ public class OrderAssembler {
         @Autowired
         private RestaurantAssembler rAssembler;
 
+        @Autowired
+        private ProductService pService;
+
         public OrderItemOutput toOutput(OrderItem orderItem) {
                 return new OrderItemOutput(
                                 orderItem.getId(),
@@ -34,9 +38,9 @@ public class OrderAssembler {
                                 orderItem.getObservation());
         }
 
-        public OrderItem toOutput(OrderItemInput orderItemInput) {
+        public OrderItem toEntity(Long restaurantID, OrderItemInput orderItemInput) {
                 OrderItem o = new OrderItem();
-                Product p = new Product();
+                Product p = pService.findOrFail(restaurantID, orderItemInput.product_id());
                 p.setId(orderItemInput.product_id());
                 o.setProduct(p);
                 o.setQuantity(orderItemInput.quantity());
@@ -73,7 +77,7 @@ public class OrderAssembler {
                 o.setPaymentMethod(pmAssembler.toEntity(orderInput.payment_method()));
                 o.setItems(orderInput.items()
                                 .stream()
-                                .map(oi -> toOutput(oi))
+                                .map(oi -> toEntity(orderInput.restaurant().id(), oi))
                                 .toList());
                 return o;
         }

@@ -10,7 +10,7 @@ public class ProductNotFoundException extends NotFoundException {
   }
 
   public ProductNotFoundException(Long restaurantID, Long productID) {
-    super(String.format("There is no restaurant with id equals to %d with id products' equals to %d", restaurantID,
+    super(String.format("There is no restaurant with id equals to %d with product id equals to %d", restaurantID,
         productID));
   }
 

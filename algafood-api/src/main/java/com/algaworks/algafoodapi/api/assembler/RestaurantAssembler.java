@@ -1,17 +1,22 @@
 package com.algaworks.algafoodapi.api.assembler;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafoodapi.api.dto.RestaurantIdInput;
 import com.algaworks.algafoodapi.api.dto.RestaurantInput;
 import com.algaworks.algafoodapi.api.dto.RestaurantOutput;
 import com.algaworks.algafoodapi.domain.model.Restaurant;
+import com.algaworks.algafoodapi.domain.service.RestaurantService;
 
 /**
  * RestauranteAssembler
  */
 @Component
 public class RestaurantAssembler {
+
+    @Autowired
+    private RestaurantService rService;
 
     public RestaurantOutput toOutput(Restaurant restaurant) {
         RestaurantOutput restaurantOutput = new RestaurantOutput(restaurant.getId(),
@@ -37,9 +42,7 @@ public class RestaurantAssembler {
     }
 
     public Restaurant toEntity(RestaurantIdInput restaurantIdInput) {
-        Restaurant restaurant = new Restaurant();
-        restaurant.setId(restaurantIdInput.id());
-        return restaurant;
+        return rService.findOrFail(restaurantIdInput.id());
     }
 
 }
