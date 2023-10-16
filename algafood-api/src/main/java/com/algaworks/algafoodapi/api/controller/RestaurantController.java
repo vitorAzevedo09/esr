@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,9 +43,15 @@ public class RestaurantController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public Page<RestaurantOutput> getAll(Pageable page) {
-        return restaurantService.findAll(page)
-                .map((r) -> restaurantAssembler.toOutput(r));
+    public ResponseEntity<?> getAll(Pageable page,
+            @RequestParam boolean resume) {
+        if (resume) {
+            return ResponseEntity.ok(restaurantService.findAll(page)
+                    .map((r) -> restaurantAssembler.toOutput(r)));
+        } else {
+            return ResponseEntity.ok(restaurantService.findAll(page)
+                    .map((r) -> restaurantAssembler.toResumeOutput(r)));
+        }
     }
 
     @GetMapping("/por-nome")
