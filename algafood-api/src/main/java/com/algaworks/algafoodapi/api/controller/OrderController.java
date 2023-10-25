@@ -1,5 +1,7 @@
 package com.algaworks.algafoodapi.api.controller;
 
+import java.time.OffsetDateTime;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,10 +22,9 @@ import com.algaworks.algafoodapi.api.assembler.OrderAssembler;
 import com.algaworks.algafoodapi.api.dto.OrderInput;
 import com.algaworks.algafoodapi.api.dto.OrderOutput;
 import com.algaworks.algafoodapi.domain.service.OrderService;
+import static com.algaworks.algafoodapi.infrastructure.repository.OrderSpecs.*;
 
-/**
- * OrderController
- */
+/** OrderController */
 @RestController
 @RequestMapping("/pedidos")
 public class OrderController {
@@ -34,8 +36,18 @@ public class OrderController {
   private OrderAssembler oAssembler;
 
   @GetMapping
-  public Page<OrderOutput> getAll(Pageable pageable) {
-    return oService.findAll(pageable)
+  public Page<OrderOutput> getAll(
+      Pageable pageable,
+      @RequestParam(name = "restaurante_id", required = false) final Long restaurantID,
+      @RequestParam(name = "cliente_id", required = false) final Long clientID,
+      @RequestParam(name = "data_inicio", required = false) final OffsetDateTime begin,
+      @RequestParam(name = "data_fim", required = false) final OffsetDateTime end) {
+    return oService.findAll(
+        withClientEqualsTo(clientID)
+            .and(withRestaurantEqualsTo(restaurantID))
+            .and(withCreationDateGreaterThan(begin))
+            .and(withCreationDateLessThan(end)),
+        pageable)
         .map(o -> oAssembler.toOutput(o));
   }
 

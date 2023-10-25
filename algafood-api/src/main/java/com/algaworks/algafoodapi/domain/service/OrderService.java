@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.algafoodapi.domain.exception.OrderItemNotFoundException;
@@ -26,8 +27,8 @@ public class OrderService {
   @Autowired
   private OrderItemRespository oiRepository;
 
-  public Page<Order> findAll(Pageable pageable) {
-    return oRepository.findAll(pageable);
+  public Page<Order> findAll(Specification<Order> spec, Pageable pageable) {
+    return oRepository.findAll(spec, pageable);
   }
 
   public Order findOrFail(final Long orderID) {

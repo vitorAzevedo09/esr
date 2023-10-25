@@ -64,7 +64,7 @@ public class UserController {
             @PathVariable Long id,
             @RequestBody @Valid UserInput userInput) {
         User user = userAssembler.toEntity(userInput);
-        userService.update(id,user);
+        userService.update(id, user);
         return userAssembler.toOutput(user);
     }
 
